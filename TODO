@@ -1,0 +1,63 @@
+Wishlist:
+    ✔ Aspect ratio fixes @started(21-09-21 19:49) @done(21-09-21 20:00) @lasted(11m26s)
+    ✔ Global transform (canvas pan+zoom) @started(21-09-21 17:59) @done(21-09-21 20:00) @lasted(2h1m27s)
+    ✔ Start global transform centered @done(21-09-21 23:15)
+    ✔ Transform influences by global transform @done(21-09-25 23:54)
+    ✔ General-purpose DOM transform sync @done(21-09-25 23:54)
+    ✔ General-purpose DOM position sync @done(21-09-24 17:39)
+    ☐ Free transform influences (add? max?)
+    ✔ Multiple influences @done(21-09-25 23:54)
+    ✔ Free influence factor (+1, +0.2, -0.5, -1...) @done(21-09-25 23:54)
+    ☐ Click to focus influence
+    ✔ Texel-aware relief factor @done(21-09-24 18:23)
+    ✔ Colormaps (parchment, globe, sci-fi, bleak, printable, obsidian, nightmare) @done(21-09-23 22:35)
+    ☐ Labels (just text: plain, banner) @started(21-09-26 12:32)
+        ☐ Single click to focus, double-click to edit, blur to stop editing
+        ☐ Textarea is not resizable
+    ☐ Selected overlay controls
+        ☐ Label / POI
+            ☐ Anchor position (corners, edges, center, icon)
+            ☐ Icon position (corners, edges)
+            ☐ Font name, size, styles, color
+            ☐ Icon name, size, color
+            ☐ Shadows
+    ☐ Points of interest (icon with text)
+        https://remixicon.com
+    ☐ Regional colormaps
+    ☐ Stickers (compass rose, ships, monsters, birds)
+    ☐ Fonts (dynamic from Google Fonts, choose stylistic variants)
+    ☐ Sticker maps (e.g. mountains positioned based on heightmap)
+    ☐ Alternate waves (sine, V, grid, arcs)
+    ☐ Influence softness / curve
+    ☐ Bug: Influences don't appear on load (until drag/zoom)
+    ✔ Waves LOD (prevent aliasing) @done(21-09-24 18:31)
+    ☐ Better waves LOD (control size)
+    ☐ "Postprocessing effects" (parchment, sci-fi, vignette, linear gradient)
+    ☐ Clouds / fog of war / uncharted territory
+    ☐ Save / load (download as JSON, export PNG)
+        May need to quantize seed (integers)
+        Autosave to localstorage
+        Save/load from clipboard
+    ☐ Better framing UI (double sidebar?)
+    ☐ Show/hide UI
+    ☐ Controls pane
+    ☐ Modal "steps" or "tabs" (topography, colors, POI)
+    ☐ Touch controls
+    ☐ Heightmap tonality
+    ☐ Regional heightmap tonality
+    ☐ HQ normal map
+    ☐ Noise parameters
+    ☐ Adjust bounding box
+    ☐ Examples (caldera, archipelago, two continents, large out-of-frame continent)
+    ☐ Imagemaps (custom textures)
+    ☐ Voronoi political boundaries
+    ☐ Topo lines
+    ☐ Smooth zoom and fling
+    ☐ Undo randomize (or 3D noise)
+    ☐ Reset translate / zoom
+    ☐ Ditch REGL
+        view-source:https://glslsandbox.com/e#75248.1
+        https://github.com/mrdoob/glsl-sandbox
+        https://github.com/sveltejs/gl/blob/master/scene/Scene.svelte
+    ✔ LICENSE file w/attributions @done(21-09-26 16:34)
+    ☐ Buy a print, proceeds to charity
