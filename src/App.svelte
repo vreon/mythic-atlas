@@ -53,6 +53,7 @@
       name: "label" + overlays.length,
       text,
       fontSizeRem: 2,
+      letterSpacingRem: 0,
       textAlign: "left",
       transform: transform || mat3.fromValues(1, 0, 0, 0, 1, 0, 0.5, 0.5, 1),
       document: {
@@ -362,6 +363,7 @@
         text-shadow: 0 1px 2px rgba(0, 0, 0, 1.0);
         font-size: {o.fontSizeRem}rem;
         line-height: {o.fontSizeRem}rem;
+        letter-spacing: {o.letterSpacingRem}rem;
         text-align: {o.textAlign};
         font-family: 'Alegreya', serif;
         font-weight: 800;
@@ -427,10 +429,10 @@
         bind:value={borderFactor}
       />
     </label>
-    <div>
+    <div style="display:flex">
       {#each Object.keys(palette) as key}
         <input
-          style="padding: 0; width: 30px; height: 30px"
+          style="padding: 0; height: 30px; flex: 1"
           type="color"
           bind:value={palette[key]}
           on:change={() => (paletteName = "custom")}
@@ -472,6 +474,18 @@
             bind:value={selectedOverlay.fontSizeRem}
           />
         </label>
+        <label class="range">
+          Tracking
+          <input
+            style="padding: 0"
+            type="range"
+            min="0"
+            max="5"
+            step="any"
+            on:input={() => overlays = overlays}
+            bind:value={selectedOverlay.letterSpacingRem}
+          />
+        </label>        
         <select
           on:change={() => overlays = overlays}
           bind:value={selectedOverlay.textAlign}
@@ -558,7 +572,7 @@
     display: flex;
     flex-direction: column;    
     gap: 10px;
-    width: 210px;
+    width: 220px;
   }
   .controls-area > div {
     padding: 10px;    
