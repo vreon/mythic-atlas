@@ -43,28 +43,22 @@
     peak: hexToVec3(palette.peak),
   };
 
-  let overlays = [
-    {
-      name: "A",
+  let overlays = [];
+
+  function addLabel(text, transform) {
+    overlays.push({
       type: "label",
-      transform: mat3.fromValues(1, 0, 0, 0, 1, 0, 0, 0, 1),
+      name: "label" + overlays.length,
+      text,
+      transform: transform || mat3.fromValues(1, 0, 0, 0, 1, 0, 0.5, 0.5, 1),
       document: {
         position: vec2.create(),
         extent: vec2.create(),
         listeners: {},
       }
-    },
-    {
-      name: "B",
-      type: "label",
-      transform: mat3.fromValues(1, 0, 0, 0, 1, 0, 1, 1, 1),
-      document: {
-        position: vec2.create(),
-        extent: vec2.create(),
-        listeners: {},
-      }
-    }
-  ];
+    });
+    overlays = overlays;
+  }
 
   function addInfluence(factor, transform) {
     overlays.push({
@@ -78,6 +72,7 @@
         listeners: {},
       }
     });
+    overlays = overlays;
   };
 
   addInfluence( 1.0, mat3.fromValues(0.5, 0, 0, 0, 0.5, 0, 0.4, 0.4, 0.5));
@@ -376,7 +371,7 @@
         top: {o.document.position[1]}px;
         padding: 0;
       "
-      bind:value={o.name}
+      bind:value={o.text}
       spellcheck="false"
     ></textarea>
   {:else if o.type === "influence" && showInfluences}
@@ -400,46 +395,52 @@
   {/if}
 {/each}
 
-<div class="controls">
-  <label
-    >Noise <input
-      style="padding: 0"
-      type="range"
-      min="0"
-      max="1"
-      step="any"
-      bind:value={noiseFactor}
-    /></label
-  >
-  <label
-    >Relief <input
-      style="padding: 0"
-      type="range"
-      min="0"
-      max="1"
-      step="any"
-      bind:value={reliefFactor}
-    /></label
-  >
-  <div>
-    {#each Object.keys(palette) as key}
-      <input
-        style="padding: 0; width: 30px; height: 30px"
-        type="color"
-        bind:value={palette[key]}
-        on:change={() => (paletteName = "custom")}
-      />
-    {/each}
+<div class="controls-area">
+  <div class="main-controls">
+    <label class="range"
+      >Noise <input
+        style="padding: 0"
+        type="range"
+        min="0"
+        max="1"
+        step="any"
+        bind:value={noiseFactor}
+      /></label
+    >
+    <label class="range"
+      >Relief <input
+        style="padding: 0"
+        type="range"
+        min="0"
+        max="1"
+        step="any"
+        bind:value={reliefFactor}
+      /></label
+    >
+    <div>
+      {#each Object.keys(palette) as key}
+        <input
+          style="padding: 0; width: 30px; height: 30px"
+          type="color"
+          bind:value={palette[key]}
+          on:change={() => (paletteName = "custom")}
+        />
+      {/each}
+    </div>
+    <select bind:value={paletteName}>
+      <option value="custom">custom</option>
+      {#each Object.keys(palettes) as paletteKey}
+        <option value={paletteKey}>{paletteKey}</option>
+      {/each}
+    </select>
+    <label><input type="checkbox" bind:checked={showInfluences} /> Show influences</label>
+    <label><input type="checkbox" bind:checked={showLabels} /> Show labels</label>
+    <button on:click|preventDefault={randomize}>Randomize</button>
   </div>
-  <select bind:value={paletteName}>
-    <option value="custom">custom</option>
-    {#each Object.keys(palettes) as paletteKey}
-      <option value={paletteKey}>{paletteKey}</option>
-    {/each}
-  </select>
-  <label><input type="checkbox" bind:checked={showInfluences} /> Show influences</label>
-  <label><input type="checkbox" bind:checked={showLabels} /> Show labels</label>
-  <button style="margin: 0" on:click|preventDefault={randomize}>Randomize</button>
+
+  <div>
+    <button on:click|preventDefault={() => addLabel("New label")}>+ Add label</button>
+  </div>
 </div>
 
 <!--
@@ -483,17 +484,33 @@
   canvas.dragging {
     cursor: grab;
   }
-  .controls {
+  button, input, select, textarea {
+    margin: 0;
+  }
+  label.range {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+  }
+  .controls-area {
     position: absolute;
     padding: 10px;
     right: 10px;
     top: 10px;
+    display: flex;
+    flex-direction: column;    
+    gap: 10px;
+  }
+  .controls-area > div {
+    padding: 10px;    
     background: rgba(255, 255, 255, 0.5);
-    border: 2px solid rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.5);
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-  }
+    gap: 5px;
+  }  
   .overlay {
     user-select: none;
     -moz-user-select: none;
