@@ -21,6 +21,7 @@ Wishlist:
         ☐ Shadows
         ☐ Delete
         ☐ Scale ratio (scale text/icon based on zoom)
+        ☐ Rotation
     ☐ Regional colormaps
     ☐ Stickers (compass rose, ships, monsters, birds)
     ☐ Fonts (dynamic from Google Fonts, choose stylistic variants)
@@ -82,3 +83,4 @@ Way later:
     ☐ Export heightmap / other maps
     ☐ Colormap gradient position editor
     ☐ Noise buffer
+    ☐ Curved text
