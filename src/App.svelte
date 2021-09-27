@@ -44,12 +44,15 @@
   };
 
   let overlays = [];
+  let selectedOverlay;
 
   function addLabel(text, transform) {
     overlays.push({
       type: "label",
       name: "label" + overlays.length,
       text,
+      fontSizeRem: 2,
+      textAlign: "left",
       transform: transform || mat3.fromValues(1, 0, 0, 0, 1, 0, 0.5, 0.5, 1),
       document: {
         position: vec2.create(),
@@ -139,6 +142,7 @@
 
   function canvasStartDrag(e) {
     canvasDragging = true;
+    selectedOverlay = null;
     addEventListener("mouseup", canvasStopDrag);
     addEventListener("mousemove", canvasDrag);
   }
@@ -184,15 +188,7 @@
   }
 
   function overlayStartDrag(overlay, e) {
-    // temporary hack: ignore clicks on textarea resize handle
-    if (
-      overlay.type === "label" && (
-        e.offsetX >= e.target.clientWidth - 15 && 
-        e.offsetY >= e.target.clientHeight - 15
-      )
-    ) {
-      return;
-    }
+    selectedOverlay = overlay;
     overlay.document.listeners.stopDrag = () => overlayStopDrag(overlay);
     overlay.document.listeners.drag = (e) => overlayDrag(overlay, e);
     addEventListener("mouseup", overlay.document.listeners.stopDrag);
@@ -353,30 +349,29 @@
 
 {#each overlays as o}
   {#if o.type === "label" && showLabels}
-    <textarea
+    <div
       class="overlay label"
+      class:selected={selectedOverlay === o}
       on:mousedown={(e) => overlayStartDrag(o, e)}
       style="
-        position:absolute;
+        position: absolute;
         color: white;
-        background: transparent;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 1.0);
-        font-size: 2rem;
-        line-height: 2rem;
+        font-size: {o.fontSizeRem}rem;
+        line-height: {o.fontSizeRem}rem;
+        text-align: {o.textAlign};
         font-family: 'Alegreya', serif;
         font-weight: 800;
         font-style: italic;
-        overflow: hidden;
+        white-space: pre;
         left: {o.document.position[0]}px;
         top: {o.document.position[1]}px;
-        padding: 0;
       "
-      bind:value={o.text}
-      spellcheck="false"
-    ></textarea>
+    >{o.text}</div>
   {:else if o.type === "influence" && showInfluences}
     <div
       class="overlay influence"
+      class:selected={selectedOverlay === o}
       on:mousedown={(e) => overlayStartDrag(o, e)}
       on:mousewheel={(e) => overlayScale(o, e)}
       style="
@@ -441,6 +436,53 @@
   <div>
     <button on:click|preventDefault={() => addLabel("New label")}>+ Add label</button>
   </div>
+
+  {#if selectedOverlay}
+    <div>
+      <div><code>{selectedOverlay.name}</code></div>      
+      {#if selectedOverlay.type === "label"}
+        <textarea
+          on:keyup={() => overlays = overlays}
+          bind:value={selectedOverlay.text}
+        ></textarea>
+        <label class="range">
+          Size
+          <input
+            style="padding: 0"
+            type="range"
+            min="0"
+            max="5"
+            step="any"
+            on:input={() => overlays = overlays}
+            bind:value={selectedOverlay.fontSizeRem}
+          />
+        </label>
+        <select
+          on:change={() => overlays = overlays}
+          bind:value={selectedOverlay.textAlign}
+        >
+          <option value="left">text left</option>
+          <option value="center">text center</option>
+          <option value="right">text right</option>
+        </select>
+        <select
+          on:change={() => overlays = overlays}
+        >
+          <option value="top-left">anchor top left</option>
+          <option value="top">anchor top</option>
+          <option value="top-right">anchor top right</option>
+          <option value="left">anchor left</option>
+          <option value="center">anchor center</option>
+          <option value="right">anchor right</option>
+          <option value="bottom-left">anchor bottom left</option>
+          <option value="bottom">anchor bottom</option>
+          <option value="bottom-right">anchor bottom right</option>
+        </select>        
+      {:else if selectedOverlay.type === "influence"}
+        <div>(to do...)</div>
+      {/if}
+    </div>
+  {/if}
 </div>
 
 <!--
@@ -501,6 +543,7 @@
     display: flex;
     flex-direction: column;    
     gap: 10px;
+    width: 210px;
   }
   .controls-area > div {
     padding: 10px;    
@@ -517,11 +560,16 @@
     -webkit-user-select: none;    
   }
   .overlay.label {
-    border: 1px solid transparent;
+    border: 2px solid transparent;
   }
-  .overlay.label:focus, .overlay.label:hover {
-    border: 1px solid rgba(0, 0, 0, 0.5);
+  .overlay.label:hover {
+    border-color: rgba(0, 0, 0, 0.5);
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+  }
+  .overlay.label.selected {
+    border-color: rgba(0, 64, 128, 1.0);
+    box-shadow: 0 0 10px rgba(0, 128, 255, 1.0);
+    background: rgba(0, 128, 255, 0.2);
   }
   .influence {
     border: 2px solid rgba(0, 0, 0, 0.1);
@@ -537,5 +585,9 @@
   .influence:hover {
     border-color: rgba(0, 0, 0, 0.5);
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+  }
+  .influence.selected {
+    border-color: rgba(0, 64, 128, 1.0);
+    box-shadow: 0 0 10px rgba(0, 128, 255, 1.0);
   }
 </style>
