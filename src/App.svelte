@@ -449,7 +449,7 @@
   </div>
 
   <div>
-    <button on:click|preventDefault={() => addLabel("New label")}>+ Add label</button>
+    <button on:click|preventDefault={() => {showLabels = true; addLabel("New label")}}>+ Add label</button>
   </div>
 
   {#if selectedOverlay}
@@ -576,6 +576,7 @@
   }
   .overlay.label {
     border: 2px solid transparent;
+    padding: 5px;
   }
   .overlay.label:hover {
     border-color: rgba(0, 0, 0, 0.5);
