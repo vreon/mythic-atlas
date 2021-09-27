@@ -31,13 +31,13 @@ export default {
     mountain: "#d6caa8",
     peak: "#cec4a1",
   },
-  nightmare: {
+  shrouded: {
     deepWater: "#1f0420",
     shallowWater: "#603a6e",
-    shore: "#000000",
-    land: "#000000",
-    mountain: "#000000",
-    peak: "#000000",
+    shore: "#442b54",
+    land: "#1d101e",
+    mountain: "#070209",
+    peak: "#000000"
   },
   obsidian: {
     deepWater: "#ffffff",

@@ -13,6 +13,7 @@ uniform mat3 influenceTransforms[NUM_INFLUENCES];
 uniform vec2 influenceFactors[NUM_INFLUENCES];
 uniform float noiseFactor;
 uniform float reliefFactor;
+uniform float borderFactor;
 
 uniform vec3 paletteDeepWater;
 uniform vec3 paletteShallowWater;
@@ -136,7 +137,7 @@ void main() {
 
     float border = step(0.0, uv.x) * (1.0 - step(1.0, uv.x)) * step(0.0, uv.y) * (1.0 - step(1.0, uv.y));
 
-    col *= mix(0.95, 1.0, border);
+    col *= mix(1.0 - borderFactor, 1.0, border);
 
     // temp hack: add waves
     col -= (1.0 - land_mask_hard) * 0.1 * vec3(smoothstep(0.8, 1.0, waves(vec2(uv.x * 30.0 * (1.0/canvasTransform[0][0]), fract(uv.y * 100.0 * (1.0/canvasTransform[0][0]))), 0.3, 2.0, 0.0)));

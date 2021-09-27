@@ -19,6 +19,7 @@
   let reliefFactor = 0.5;
   let showInfluences = false;
   let showLabels = true;
+  let borderFactor = 0.05;
   let canvasDragging = false;
   let canvasTransform = mat3.create();
   let canvasTransformInitialized = false;
@@ -291,6 +292,7 @@
         canvasTransform: regl.prop("canvasTransform"),
         noiseFactor: regl.prop("noiseFactor"),
         reliefFactor: regl.prop("reliefFactor"),
+        borderFactor: regl.prop("borderFactor"),
         paletteDeepWater: regl.prop("paletteDeepWater"),
         paletteShallowWater: regl.prop("paletteShallowWater"),
         paletteShore: regl.prop("paletteShore"),
@@ -331,6 +333,7 @@
           influenceFactors,
           noiseFactor,
           reliefFactor,
+          borderFactor,
           paletteDeepWater: paletteRGB.deepWater,
           paletteShallowWater: paletteRGB.shallowWater,
           paletteShore: paletteRGB.shore,
@@ -376,7 +379,6 @@
       on:mousewheel={(e) => overlayScale(o, e)}
       style="
         position:absolute;
-        color: white;
         overflow: hidden;
         cursor: move;
         left: {o.document.position[0] - (o.document.extent[0] / 2)}px;
@@ -392,26 +394,39 @@
 
 <div class="controls-area">
   <div class="main-controls">
-    <label class="range"
-      >Noise <input
+    <label class="range">
+      Warp
+      <input
         style="padding: 0"
         type="range"
         min="0"
         max="1"
         step="any"
         bind:value={noiseFactor}
-      /></label
-    >
-    <label class="range"
-      >Relief <input
+      />
+    </label>
+    <label class="range">
+      Relief
+      <input
         style="padding: 0"
         type="range"
         min="0"
         max="1"
         step="any"
         bind:value={reliefFactor}
-      /></label
-    >
+      />
+    </label>
+    <label class="range">
+      Border
+      <input
+        style="padding: 0"
+        type="range"
+        min="0"
+        max="1"
+        step="any"
+        bind:value={borderFactor}
+      />
+    </label>
     <div>
       {#each Object.keys(palette) as key}
         <input
@@ -576,6 +591,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    color: white;
     font-size: 2rem;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 1.0);
     border-radius: 99999px;
