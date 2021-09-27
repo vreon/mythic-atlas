@@ -48,7 +48,7 @@
   let selectedOverlay;
 
   function addLabel(text, transform) {
-    overlays.push({
+    const label = {
       type: "label",
       name: "label" + overlays.length,
       text,
@@ -61,8 +61,10 @@
         extent: vec2.create(),
         listeners: {},
       }
-    });
+    };
+    overlays.push(label);
     overlays = overlays;
+    return label;
   }
 
   function addInfluence(factor, transform) {
@@ -451,7 +453,7 @@
   </div>
 
   <div>
-    <button on:click|preventDefault={() => {showLabels = true; addLabel("New label")}}>+ Add label</button>
+    <button on:click|preventDefault={() => {showLabels = true; selectedOverlay = addLabel("New label")}}>+ Add label</button>
   </div>
 
   {#if selectedOverlay}
