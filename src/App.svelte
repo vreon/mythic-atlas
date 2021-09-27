@@ -431,10 +431,9 @@
         bind:value={borderFactor}
       />
     </label>
-    <div style="display:flex">
+    <div class="palette">
       {#each Object.keys(palette) as key}
         <input
-          style="padding: 0; height: 30px; flex: 1"
           type="color"
           bind:value={palette[key]}
           on:change={() => (paletteName = "custom")}
@@ -584,6 +583,27 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+  }
+  .palette {
+    display: flex;
+    gap: 1px;
+  }
+  .palette input[type="color"] {
+    flex: 1;
+    background: none;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    height: 30px;
+  }
+  .palette input[type="color"]::-webkit-color-swatch {
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+    margin: 0;
+    padding: 0;
+  }
+  .palette input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
   }  
   .overlay {
     user-select: none;
