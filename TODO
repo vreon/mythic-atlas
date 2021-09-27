@@ -61,12 +61,15 @@ Wishlist:
 Bugs:
     ☐ Influences don't appear on load (until drag/zoom)
     ☐ Waves get real weird when you zoom in too far
+    ☐ Firefox: Range inputs exceed container
+    ☐ Firefox: Mousewheel on canvas has no effect
+    ☐ Firefox: Palette pseudo-elements need styling
 
 Cleanup:
     ☐ Refactor into components
     ☐ Better state handling / fewer reactivity hacks (perhaps stores?)
     ☐ CSS transform2d instead of left/top?
-    ☐ Test in other browsers (esp. webkit-specific CSS selectors)
+    ☐ Test in other browsers
 
 Launch:
     ✔ Register mythicatlas.com @done(21-09-26 23:28)
