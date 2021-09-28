@@ -8,6 +8,8 @@
   import vert from "./vert.glsl";
   import palettes from "./palettes.js";
 
+  import { view, invView } from "./stores/view.js";
+
   const quad = primitiveQuad();
   let gl;
   let element;
@@ -21,14 +23,7 @@
   let showLabels = true;
   let borderFactor = 0.05;
   let canvasDragging = false;
-  let canvasTransform = mat3.create();
-  let canvasTransformInitialized = false;
-
-  $: invCanvasTransform = mat3.invert(
-    invCanvasTransform || (invCanvasTransform = mat3.create()),
-    canvasTransform
-  );
-
+  
   let palette = {};
   let paletteName = "plain";
 
@@ -98,7 +93,7 @@
     vec2.transformMat3(
       o.document.position,
       o.document.position,
-      invCanvasTransform
+      $invView
     );
     vec2.multiply(
       o.document.position,
@@ -114,7 +109,7 @@
     vec2.transformMat3(
       o.document.extent,
       o.document.extent,
-      invCanvasTransform
+      $invView
     );
     vec2.multiply(
       o.document.extent,
@@ -173,12 +168,7 @@
       e.movementX / window.devicePixelRatio,
       e.movementY / window.devicePixelRatio
     );
-    mat3.translate(
-      canvasTransform,
-      canvasTransform,
-      vec2.negate(vec2.create(), delta)
-    );
-    canvasTransform = canvasTransform;
+    view.translate(vec2.negate(vec2.create(), delta));
   }
 
   function canvasStopDrag() {
@@ -190,16 +180,8 @@
   function canvasZoom(e) {
     let step = 0.1;
     let zoom = 1.0 - Math.sign(e.wheelDeltaY) * step;
-    let scale = vec2.fromValues(zoom, zoom); // <whispers> zoom zoom
     let center = normalizedScreenCoordinates(e.clientX, e.clientY);
-    mat3.translate(canvasTransform, canvasTransform, center);
-    mat3.scale(canvasTransform, canvasTransform, scale);
-    mat3.translate(
-      canvasTransform,
-      canvasTransform,
-      vec2.negate(vec2.create(), center)
-    );
-    canvasTransform = canvasTransform;
+    view.zoom(zoom, center);
   }
 
   function overlayStartDrag(overlay, e) {
@@ -220,7 +202,7 @@
     vec2.multiply(
       delta,
       delta,
-      vec2.fromValues(canvasTransform[0], canvasTransform[4])
+      vec2.fromValues($view[0], $view[4])
     );
     vec2.multiply(
       delta,
@@ -265,31 +247,12 @@
 
       // Check if the canvas is not the same size.
       if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
-        if (canvasTransformInitialized) {
-          // Undo the previous aspect ratio scaling
-          mat3.scale(
-            canvasTransform,
-            canvasTransform,
-            vec2.fromValues(1.0, width / height)
-          );
-        }
-
         // Make the canvas the same size
         width = canvas.width = displayWidth;
         height = canvas.height = displayHeight;
-
-        // Scale according to new aspect ratio
-        mat3.scale(
-          canvasTransform,
-          canvasTransform,
-          vec2.fromValues(1.0, height / width)
-        );
-
-        canvasTransform = canvasTransform;
+        view.resize(width, height);
       }
       gl.viewport(0, 0, canvas.width, canvas.height);
-
-      canvasTransformInitialized = true;
     }
   }
 
@@ -346,7 +309,7 @@
         draw({
           time,
           seed,
-          canvasTransform,
+          canvasTransform: $view,
           influenceTransforms,
           influenceFactors,
           noiseFactor,
@@ -556,7 +519,10 @@
   "
 >
   <div>
-    {JSON.stringify(canvasTransform)}
+    {JSON.stringify($view)}
+  </div>
+  <div>
+    {JSON.stringify($invView)}
   </div>
 </div>
 -->
