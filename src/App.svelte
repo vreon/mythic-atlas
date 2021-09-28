@@ -60,7 +60,7 @@
         position: vec2.create(),
         extent: vec2.create(),
         listeners: {},
-      }
+      },
     };
     overlays.push(label);
     overlays = overlays;
@@ -77,15 +77,18 @@
         position: vec2.create(),
         extent: vec2.create(),
         listeners: {},
-      }
+      },
     });
     overlays = overlays;
-  };
+  }
 
-  addInfluence( 1.0, mat3.fromValues(0.5, 0, 0, 0, 0.5, 0, 0.4, 0.4, 0.5));
+  addInfluence(1.0, mat3.fromValues(0.5, 0, 0, 0, 0.5, 0, 0.4, 0.4, 0.5));
   addInfluence(-1.0, mat3.fromValues(0.3, 0, 0, 0, 0.3, 0, 0.55, 0.55, 0.3));
-  for(let i = 0; i < 7; i++) {
-    addInfluence( 0.0, mat3.fromValues(0.1, 0, 0, 0, 0.1, 0, -0.075, 0.05 + 0.125 * i, 0.1));
+  for (let i = 0; i < 7; i++) {
+    addInfluence(
+      0.0,
+      mat3.fromValues(0.1, 0, 0, 0, 0.1, 0, -0.075, 0.05 + 0.125 * i, 0.1)
+    );
   }
 
   $: overlays = overlays.map((o) => {
@@ -108,7 +111,11 @@
       vec2.fromValues(1.0, 1.0),
       o.transform
     );
-    vec2.transformMat3(o.document.extent, o.document.extent, invCanvasTransform);
+    vec2.transformMat3(
+      o.document.extent,
+      o.document.extent,
+      invCanvasTransform
+    );
     vec2.multiply(
       o.document.extent,
       o.document.extent,
@@ -119,11 +126,15 @@
     return o;
   });
 
-  $: influenceTransforms = overlays.filter(o => o.type === "influence").map(o => o.transform);
+  $: influenceTransforms = overlays
+    .filter((o) => o.type === "influence")
+    .map((o) => o.transform);
 
   // BUG[uniform1fv]: this should be a float[] but regl chokes
   // See https://github.com/regl-project/regl/issues/611
-  $: influenceFactors = overlays.filter(o => o.type === "influence").map(o => vec2.fromValues(o.factor, o.factor));
+  $: influenceFactors = overlays
+    .filter((o) => o.type === "influence")
+    .map((o) => vec2.fromValues(o.factor, o.factor));
 
   onMount(() => {
     const contexts = ["webgl", "experimental-webgl", "moz-webgl", "webkit-3d"];
@@ -204,22 +215,22 @@
     // https://crbug.com/1092358
     let delta = normalizedScreenCoordinates(
       e.movementX / window.devicePixelRatio,
-      e.movementY / window.devicePixelRatio,
+      e.movementY / window.devicePixelRatio
     );
     vec2.multiply(
       delta,
       delta,
-      vec2.fromValues(canvasTransform[0], canvasTransform[4]),
+      vec2.fromValues(canvasTransform[0], canvasTransform[4])
     );
     vec2.multiply(
       delta,
       delta,
-      vec2.fromValues(1.0/overlay.transform[0], 1.0/overlay.transform[4])
+      vec2.fromValues(1.0 / overlay.transform[0], 1.0 / overlay.transform[4])
     );
     // vec2.multiply(delta, delta, vec2.fromValues(7, 8));
     mat3.translate(overlay.transform, overlay.transform, delta);
     overlays = overlays;
-  };
+  }
 
   function overlayStopDrag(overlay) {
     removeEventListener("mouseup", overlay.document.listeners.stopDrag);
@@ -305,8 +316,12 @@
       };
 
       for (let i = 0; i < influenceTransforms.length; i++) {
-        uniforms[`influenceTransforms[${i}]`] = regl.prop(`influenceTransforms[${i}]`);
-        uniforms[`influenceFactors[${i}]`] = regl.prop(`influenceFactors[${i}]`);
+        uniforms[`influenceTransforms[${i}]`] = regl.prop(
+          `influenceTransforms[${i}]`
+        );
+        uniforms[`influenceFactors[${i}]`] = regl.prop(
+          `influenceFactors[${i}]`
+        );
       }
 
       const draw = regl({
@@ -374,7 +389,9 @@
         left: {o.document.position[0]}px;
         top: {o.document.position[1]}px;
       "
-    >{o.text}</div>
+    >
+      {o.text}
+    </div>
   {:else if o.type === "influence" && showInfluences}
     <div
       class="overlay influence"
@@ -385,13 +402,13 @@
         position:absolute;
         overflow: hidden;
         cursor: move;
-        left: {o.document.position[0] - (o.document.extent[0] / 2)}px;
-        top: {o.document.position[1] - (o.document.extent[1] / 2)}px;
+        left: {o.document.position[0] - o.document.extent[0] / 2}px;
+        top: {o.document.position[1] - o.document.extent[1] / 2}px;
         width: {o.document.extent[0]}px;
         height: {o.document.extent[1]}px;
       "
     >
-      {o.factor > 0 ? "+" : ""}{(Math.round(o.factor*100))/100}
+      {o.factor > 0 ? "+" : ""}{Math.round(o.factor * 100) / 100}
     </div>
   {/if}
 {/each}
@@ -446,23 +463,36 @@
         <option value={paletteKey}>{paletteKey}</option>
       {/each}
     </select>
-    <label><input type="checkbox" bind:checked={showInfluences} /> Show influences</label>
-    <label><input type="checkbox" bind:checked={showLabels} /> Show labels</label>
+    <label>
+      <input type="checkbox" bind:checked={showInfluences} />
+       Show influences
+    </label>
+    <label>
+      <input type="checkbox" bind:checked={showLabels} />
+       Show labels
+    </label>
     <button on:click|preventDefault={randomize}>Randomize</button>
   </div>
 
   <div>
-    <button on:click|preventDefault={() => {showLabels = true; selectedOverlay = addLabel("New label")}}>+ Add label</button>
+    <button
+      on:click|preventDefault={() => {
+        showLabels = true;
+        selectedOverlay = addLabel("New label");
+      }}
+    >
+      + Add label
+    </button>
   </div>
 
   {#if selectedOverlay}
     <div>
-      <div><code>{selectedOverlay.name}</code></div>      
+      <div><code>{selectedOverlay.name}</code></div>
       {#if selectedOverlay.type === "label"}
         <textarea
-          on:keyup={() => overlays = overlays}
+          on:keyup={() => (overlays = overlays)}
           bind:value={selectedOverlay.text}
-        ></textarea>
+        />
         <label class="range">
           Size
           <input
@@ -471,7 +501,7 @@
             min="0"
             max="5"
             step="any"
-            on:input={() => overlays = overlays}
+            on:input={() => (overlays = overlays)}
             bind:value={selectedOverlay.fontSizeRem}
           />
         </label>
@@ -483,21 +513,19 @@
             min="0"
             max="5"
             step="any"
-            on:input={() => overlays = overlays}
+            on:input={() => (overlays = overlays)}
             bind:value={selectedOverlay.letterSpacingRem}
           />
-        </label>        
+        </label>
         <select
-          on:change={() => overlays = overlays}
+          on:change={() => (overlays = overlays)}
           bind:value={selectedOverlay.textAlign}
         >
           <option value="left">text left</option>
           <option value="center">text center</option>
           <option value="right">text right</option>
         </select>
-        <select
-          on:change={() => overlays = overlays}
-        >
+        <select on:change={() => (overlays = overlays)}>
           <option value="top-left">anchor top left</option>
           <option value="top">anchor top</option>
           <option value="top-right">anchor top right</option>
@@ -507,7 +535,7 @@
           <option value="bottom-left">anchor bottom left</option>
           <option value="bottom">anchor bottom</option>
           <option value="bottom-right">anchor bottom right</option>
-        </select>        
+        </select>
       {:else if selectedOverlay.type === "influence"}
         <div>(to do...)</div>
       {/if}
@@ -556,8 +584,16 @@
   canvas.dragging {
     cursor: grab;
   }
-  button, input, select, textarea {
+  button,
+  input,
+  select,
+  textarea {
     margin: 0;
+  }
+  button, select {
+    border: 2px solid #aaa;
+    border-radius: 4px;
+    background: #f2f2f2;
   }
   label.range {
     display: flex;
@@ -571,12 +607,12 @@
     right: 10px;
     top: 10px;
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;
     gap: 10px;
     width: 220px;
   }
   .controls-area > div {
-    padding: 10px;    
+    padding: 10px;
     background: rgba(255, 255, 255, 0.5);
     border: 2px solid rgba(255, 255, 255, 0.5);
     border-radius: 5px;
@@ -604,11 +640,11 @@
   }
   .palette input[type="color"]::-webkit-color-swatch-wrapper {
     padding: 0;
-  }  
+  }
   .overlay {
     user-select: none;
     -moz-user-select: none;
-    -webkit-user-select: none;    
+    -webkit-user-select: none;
   }
   .overlay.label {
     border: 2px solid transparent;
@@ -619,8 +655,8 @@
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
   }
   .overlay.label.selected {
-    border-color: rgba(0, 64, 128, 1.0);
-    box-shadow: 0 0 10px rgba(0, 128, 255, 1.0);
+    border-color: rgba(0, 64, 128, 1);
+    box-shadow: 0 0 10px rgba(0, 128, 255, 1);
     background: rgba(0, 128, 255, 0.2);
   }
   .influence {
@@ -630,7 +666,7 @@
     justify-content: center;
     color: white;
     font-size: 2rem;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 1.0);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 1);
     border-radius: 99999px;
     font-weight: bold;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
@@ -640,7 +676,7 @@
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
   }
   .influence.selected {
-    border-color: rgba(0, 64, 128, 1.0);
-    box-shadow: 0 0 10px rgba(0, 128, 255, 1.0);
+    border-color: rgba(0, 64, 128, 1);
+    box-shadow: 0 0 10px rgba(0, 128, 255, 1);
   }
 </style>
