@@ -17,7 +17,7 @@ Wishlist:
         ☐ Font name, size, styles, color, letter spacing @started(21-09-26 22:33)
         ☐ Icon name, size, color
             https://remixicon.com
-        ☐ Icon position (corners, edges)                
+        ☐ Icon position (corners, edges)
         ☐ Shadows
         ☐ Delete
         ☐ Scale ratio (scale text/icon based on zoom)
@@ -50,6 +50,7 @@ Wishlist:
     ☐ Examples (caldera, archipelago, two continents, large out-of-frame continent)
     ☐ Voronoi political boundaries
     ☐ Smooth zoom and fling
+        Svelte "tweening"
     ☐ Undo randomize (or 3D noise)
     ☐ Reset translate / zoom
     ☐ Ditch REGL
