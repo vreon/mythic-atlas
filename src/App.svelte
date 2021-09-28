@@ -9,6 +9,14 @@
   import palettes from "./palettes.js";
 
   import { view, invView } from "./stores/view.js";
+  import {
+    seed,
+    noiseFactor,
+    reliefFactor,
+    borderFactor,
+    showInfluences,
+    showLabels
+  } from "./stores/globalControls.js";
 
   const quad = primitiveQuad();
   let gl;
@@ -16,14 +24,9 @@
   let width = 0;
   let height = 0;
   let regl;
-  let seed = Math.random();
-  let noiseFactor = 0.5;
-  let reliefFactor = 0.5;
-  let showInfluences = false;
-  let showLabels = true;
-  let borderFactor = 0.05;
+
   let canvasDragging = false;
-  
+
   let palette = {};
   let paletteName = "plain";
 
@@ -90,11 +93,7 @@
     // TODO: I think multiplies here could be another transform
 
     vec2.transformMat3(o.document.position, vec2.create(), o.transform);
-    vec2.transformMat3(
-      o.document.position,
-      o.document.position,
-      $invView
-    );
+    vec2.transformMat3(o.document.position, o.document.position, $invView);
     vec2.multiply(
       o.document.position,
       o.document.position,
@@ -106,11 +105,7 @@
       vec2.fromValues(1.0, 1.0),
       o.transform
     );
-    vec2.transformMat3(
-      o.document.extent,
-      o.document.extent,
-      $invView
-    );
+    vec2.transformMat3(o.document.extent, o.document.extent, $invView);
     vec2.multiply(
       o.document.extent,
       o.document.extent,
@@ -199,11 +194,7 @@
       e.movementX / window.devicePixelRatio,
       e.movementY / window.devicePixelRatio
     );
-    vec2.multiply(
-      delta,
-      delta,
-      vec2.fromValues($view[0], $view[4])
-    );
+    vec2.multiply(delta, delta, vec2.fromValues($view[0], $view[4]));
     vec2.multiply(
       delta,
       delta,
@@ -234,7 +225,7 @@
   }
 
   function randomize() {
-    seed = Math.random();
+    seed.set(Math.random());
     console.log(palette);
   }
 
@@ -308,13 +299,13 @@
         // draw a triangle using the command defined above
         draw({
           time,
-          seed,
+          seed: $seed,
           canvasTransform: $view,
           influenceTransforms,
           influenceFactors,
-          noiseFactor,
-          reliefFactor,
-          borderFactor,
+          noiseFactor: $noiseFactor,
+          reliefFactor: $reliefFactor,
+          borderFactor: $borderFactor,
           paletteDeepWater: paletteRGB.deepWater,
           paletteShallowWater: paletteRGB.shallowWater,
           paletteShore: paletteRGB.shore,
@@ -355,7 +346,7 @@
     >
       {o.text}
     </div>
-  {:else if o.type === "influence" && showInfluences}
+  {:else if o.type === "influence" && $showInfluences}
     <div
       class="overlay influence"
       class:selected={selectedOverlay === o}
@@ -386,7 +377,7 @@
         min="0"
         max="1"
         step="any"
-        bind:value={noiseFactor}
+        bind:value={$noiseFactor}
       />
     </label>
     <label class="range">
@@ -397,7 +388,7 @@
         min="0"
         max="1"
         step="any"
-        bind:value={reliefFactor}
+        bind:value={$reliefFactor}
       />
     </label>
     <label class="range">
@@ -408,7 +399,7 @@
         min="0"
         max="1"
         step="any"
-        bind:value={borderFactor}
+        bind:value={$borderFactor}
       />
     </label>
     <div class="palette">
@@ -427,12 +418,12 @@
       {/each}
     </select>
     <label>
-      <input type="checkbox" bind:checked={showInfluences} />
-       Show influences
+      <input type="checkbox" bind:checked={$showInfluences} />
+      Show influences
     </label>
     <label>
-      <input type="checkbox" bind:checked={showLabels} />
-       Show labels
+      <input type="checkbox" bind:checked={$showLabels} />
+      Show labels
     </label>
     <button on:click|preventDefault={randomize}>Randomize</button>
   </div>
@@ -440,7 +431,7 @@
   <div>
     <button
       on:click|preventDefault={() => {
-        showLabels = true;
+        showLabels.set(true);
         selectedOverlay = addLabel("New label");
       }}
     >
@@ -556,7 +547,8 @@
   textarea {
     margin: 0;
   }
-  button, select {
+  button,
+  select {
     border: 2px solid #aaa;
     border-radius: 4px;
     background: #f2f2f2;
