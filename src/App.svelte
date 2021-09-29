@@ -15,8 +15,10 @@
     reliefFactor,
     borderFactor,
     showInfluences,
-    showLabels
+    showLabels,
   } from "./stores/globalControls.js";
+
+  import PaletteInput from "./PaletteInput.svelte";
 
   const quad = primitiveQuad();
   let gl;
@@ -27,20 +29,11 @@
 
   let canvasDragging = false;
 
-  let palette = {};
   let paletteName = "plain";
+  let palette = [];
 
-  $: paletteName !== "custom" &&
-    (palette = Object.assign({}, palettes[paletteName]));
-
-  $: paletteRGB = {
-    deepWater: hexToVec3(palette.deepWater),
-    shallowWater: hexToVec3(palette.shallowWater),
-    shore: hexToVec3(palette.shore),
-    land: hexToVec3(palette.land),
-    mountain: hexToVec3(palette.mountain),
-    peak: hexToVec3(palette.peak),
-  };
+  $: paletteName !== "custom" && (palette = [...palettes[paletteName]]);
+  $: paletteRGB = palette.map(hexToVec3);
 
   let overlays = [];
   let selectedOverlay;
@@ -83,10 +76,7 @@
   addInfluence(1.0, mat3.fromValues(0.5, 0, 0, 0, 0.5, 0, 0.4, 0.4, 0.5));
   addInfluence(-1.0, mat3.fromValues(0.3, 0, 0, 0, 0.3, 0, 0.55, 0.55, 0.3));
   for (let i = 0; i < 7; i++) {
-    addInfluence(
-      0.0,
-      mat3.fromValues(0.1, 0, 0, 0, 0.1, 0, -0.075, 0.05 + 0.125 * i, 0.1)
-    );
+    addInfluence(0.0, mat3.fromValues(0.1, 0, 0, 0, 0.1, 0, -0.075, 0.05 + 0.125 * i, 0.1));
   }
 
   $: overlays = overlays.map((o) => {
@@ -94,31 +84,17 @@
 
     vec2.transformMat3(o.document.position, vec2.create(), o.transform);
     vec2.transformMat3(o.document.position, o.document.position, $invView);
-    vec2.multiply(
-      o.document.position,
-      o.document.position,
-      vec2.fromValues(width, height)
-    );
+    vec2.multiply(o.document.position, o.document.position, vec2.fromValues(width, height));
 
-    vec2.transformMat3(
-      o.document.extent,
-      vec2.fromValues(1.0, 1.0),
-      o.transform
-    );
+    vec2.transformMat3(o.document.extent, vec2.fromValues(1.0, 1.0), o.transform);
     vec2.transformMat3(o.document.extent, o.document.extent, $invView);
-    vec2.multiply(
-      o.document.extent,
-      o.document.extent,
-      vec2.fromValues(width, height)
-    );
+    vec2.multiply(o.document.extent, o.document.extent, vec2.fromValues(width, height));
     vec2.subtract(o.document.extent, o.document.extent, o.document.position);
 
     return o;
   });
 
-  $: influenceTransforms = overlays
-    .filter((o) => o.type === "influence")
-    .map((o) => o.transform);
+  $: influenceTransforms = overlays.filter((o) => o.type === "influence").map((o) => o.transform);
 
   // BUG[uniform1fv]: this should be a float[] but regl chokes
   // See https://github.com/regl-project/regl/issues/611
@@ -270,12 +246,8 @@
       };
 
       for (let i = 0; i < influenceTransforms.length; i++) {
-        uniforms[`influenceTransforms[${i}]`] = regl.prop(
-          `influenceTransforms[${i}]`
-        );
-        uniforms[`influenceFactors[${i}]`] = regl.prop(
-          `influenceFactors[${i}]`
-        );
+        uniforms[`influenceTransforms[${i}]`] = regl.prop(`influenceTransforms[${i}]`);
+        uniforms[`influenceFactors[${i}]`] = regl.prop(`influenceFactors[${i}]`);
       }
 
       const draw = regl({
@@ -306,12 +278,12 @@
           noiseFactor: $noiseFactor,
           reliefFactor: $reliefFactor,
           borderFactor: $borderFactor,
-          paletteDeepWater: paletteRGB.deepWater,
-          paletteShallowWater: paletteRGB.shallowWater,
-          paletteShore: paletteRGB.shore,
-          paletteLand: paletteRGB.land,
-          paletteMountain: paletteRGB.mountain,
-          palettePeak: paletteRGB.peak,
+          paletteDeepWater: paletteRGB[0],
+          paletteShallowWater: paletteRGB[1],
+          paletteShore: paletteRGB[2],
+          paletteLand: paletteRGB[3],
+          paletteMountain: paletteRGB[4],
+          palettePeak: paletteRGB[5],
         });
       });
     }
@@ -371,14 +343,7 @@
   <div class="main-controls">
     <label class="range">
       Warp
-      <input
-        style="padding: 0"
-        type="range"
-        min="0"
-        max="1"
-        step="any"
-        bind:value={$noiseFactor}
-      />
+      <input style="padding: 0" type="range" min="0" max="1" step="any" bind:value={$noiseFactor} />
     </label>
     <label class="range">
       Relief
@@ -402,19 +367,11 @@
         bind:value={$borderFactor}
       />
     </label>
-    <div class="palette">
-      {#each Object.keys(palette) as key}
-        <input
-          type="color"
-          bind:value={palette[key]}
-          on:change={() => (paletteName = "custom")}
-        />
-      {/each}
-    </div>
+    <PaletteInput bind:palette on:input={() => (paletteName = "custom")} />
     <select bind:value={paletteName}>
       <option value="custom">custom</option>
-      {#each Object.keys(palettes) as paletteKey}
-        <option value={paletteKey}>{paletteKey}</option>
+      {#each Object.keys(palettes) as name}
+        <option value={name}>{name}</option>
       {/each}
     </select>
     <label>
@@ -443,10 +400,7 @@
     <div>
       <div><code>{selectedOverlay.name}</code></div>
       {#if selectedOverlay.type === "label"}
-        <textarea
-          on:keyup={() => (overlays = overlays)}
-          bind:value={selectedOverlay.text}
-        />
+        <textarea on:keyup={() => (overlays = overlays)} bind:value={selectedOverlay.text} />
         <label class="range">
           Size
           <input
@@ -471,10 +425,7 @@
             bind:value={selectedOverlay.letterSpacingRem}
           />
         </label>
-        <select
-          on:change={() => (overlays = overlays)}
-          bind:value={selectedOverlay.textAlign}
-        >
+        <select on:change={() => (overlays = overlays)} bind:value={selectedOverlay.textAlign}>
           <option value="left">text left</option>
           <option value="center">text center</option>
           <option value="right">text right</option>
@@ -577,27 +528,6 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-  }
-  .palette {
-    display: flex;
-    gap: 1px;
-  }
-  .palette input[type="color"] {
-    flex: 1;
-    background: none;
-    border: 0;
-    padding: 0;
-    margin: 0;
-    height: 30px;
-  }
-  .palette input[type="color"]::-webkit-color-swatch {
-    border: 2px solid rgba(0, 0, 0, 0.2);
-    border-radius: 2px;
-    margin: 0;
-    padding: 0;
-  }
-  .palette input[type="color"]::-webkit-color-swatch-wrapper {
-    padding: 0;
   }
   .overlay {
     user-select: none;
