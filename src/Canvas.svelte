@@ -86,7 +86,7 @@
   function canvasZoom(e) {
     let step = 0.1;
     let zoom = 1.0 - Math.sign(e.wheelDeltaY) * step;
-    let center = vec2.fromValues(e.clientX / $canvasHeight, e.clientY / $canvasHeight);
+    let center = vec2.fromValues(e.clientX / $canvasWidth, e.clientY / $canvasHeight);
     view.zoom(zoom, center);
   }
 
@@ -186,7 +186,7 @@
 <canvas
   bind:this={element}
   on:mousedown={canvasStartDrag}
-  on:mousewheel={canvasZoom}
+  on:wheel={canvasZoom}
   on:dblclick={resetMode}
   class:dragging={canvasDragging}
 />

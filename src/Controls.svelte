@@ -186,7 +186,7 @@
       class="overlay influence"
       class:selected={$selectedOverlay === o}
       on:mousedown={(e) => overlayStartDrag(o, e)}
-      on:mousewheel={(e) => overlayScale(o, e)}
+      on:wheel={(e) => overlayScale(o, e)}
       style="
         position:absolute;
         overflow: hidden;
