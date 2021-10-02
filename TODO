@@ -60,7 +60,7 @@ Wishlist:
 Bugs:
   ✔ Influences don't appear on load (until drag/zoom) @done(21-10-02 10:47)
   ☐ Waves get real weird when you zoom in too far
-  ☐ Firefox: Range inputs exceed container
+  ✔ Firefox: Range inputs exceed container
   ✔ Firefox: Mousewheel on canvas/influences has no effect @done(21-10-02 13:36)
   ☐ Firefox: Palette pseudo-elements need styling
   ☐ Heightmaps > 1.0 look silly during fakeHeightFactor transitions

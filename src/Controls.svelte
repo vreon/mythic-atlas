@@ -403,6 +403,9 @@
     align-items: center;
     gap: 5px;
   }
+  input[type="range"] {
+    width: 100%;
+  }
   .panel .header {
     display: flex;
     align-items: center;
