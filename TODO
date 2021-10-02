@@ -1,91 +1,91 @@
 Wishlist:
-    ✔ Aspect ratio fixes @started(21-09-21 19:49) @done(21-09-21 20:00) @lasted(11m26s)
-    ✔ Global transform (canvas pan+zoom) @started(21-09-21 17:59) @done(21-09-21 20:00) @lasted(2h1m27s)
-    ✔ Start global transform centered @done(21-09-21 23:15)
-    ✔ Transform influences by global transform @done(21-09-25 23:54)
-    ✔ General-purpose DOM transform sync @done(21-09-25 23:54)
-    ✔ General-purpose DOM position sync @done(21-09-24 17:39)
-    ✔ Multiple influences @done(21-09-25 23:54)
-    ✔ Free influence factor (+1, +0.2, -0.5, -1...) @done(21-09-25 23:54)
-    ✔ Click to focus influence @done(21-09-26 22:38)
-    ✔ Texel-aware relief factor @done(21-09-24 18:23)
-    ✔ Colormaps (parchment, globe, sci-fi, bleak, printable, obsidian, nightmare) @done(21-09-23 22:35)
-    ✔ Labels (just text: plain, banner) @started(21-09-26 12:32) @done(21-09-26 22:17) @lasted(9h45m39s)
-    ✔ Selected overlay controls @done(21-09-26 22:18)
-    ☐ Labels / points of interest @started(21-09-26 22:18)
-        ☐ Anchor position (corners, edges, center, icon) @started(21-09-26 22:33)
-        ☐ Font name, size, styles, color, letter spacing @started(21-09-26 22:33)
-        ☐ Icon name, size, color
-            https://remixicon.com
-        ☐ Icon position (corners, edges)
-        ☐ Shadows
-        ☐ Delete
-        ☐ Scale ratio (scale text/icon based on zoom)
-        ☐ Rotation
-    ☐ Regional colormaps
-    ☐ Stickers (compass rose, ships, monsters, birds)
-    ☐ Fonts (dynamic from Google Fonts, choose stylistic variants)
-    ☐ Sticker maps (e.g. mountains positioned based on heightmap)
-    ☐ Alternate waves (sine, V, grid, arcs)
-    ☐ Influence softness / curve
-    ☐ Per-influence warp factor
-    ✔ Waves LOD (prevent aliasing) @done(21-09-24 18:31)
-    ☐ Better waves LOD (control size)
-    ☐ "Postprocessing effects" (parchment, grid, vignette, linear gradient)
-    ☐ Clouds / fog of war / uncharted territory
-    ☐ Save / load (download as JSON, export PNG)
-        May need to quantize seed (integers)
-        Autosave to localstorage
-        Save/load from clipboard
-    ☐ Better framing UI (double sidebar?)
-    ☐ Show/hide UI
-    ☐ Show available hotkeys when hovering over stuff
-    ☐ Modal "steps" or "tabs" (topography, colors, POI)
-    ☐ Touch controls
-    ☐ Heightmap tonality
-    ☐ Regional heightmap tonality
-    ☐ HQ normal map
-    ☐ Noise parameters
-    ☐ Adjust bounding box
-    ☐ Examples (caldera, archipelago, two continents, large out-of-frame continent)
-    ☐ Voronoi political boundaries
-    ☐ Smooth zoom and fling
-        Svelte "tweening"
-    ☐ Undo randomize (or 3D noise)
-    ☐ Reset translate / zoom
-    ☐ Ditch REGL
-        view-source:https://glslsandbox.com/e#75248.1
-        https://github.com/mrdoob/glsl-sandbox
-        https://github.com/sveltejs/gl/blob/master/scene/Scene.svelte
-    ✔ LICENSE file w/attributions @done(21-09-26 16:34)
+  ✔ Aspect ratio fixes @started(21-09-21 19:49) @done(21-09-21 20:00) @lasted(11m26s)
+  ✔ Global transform (canvas pan+zoom) @started(21-09-21 17:59) @done(21-09-21 20:00) @lasted(2h1m27s)
+  ✔ Start global transform centered @done(21-09-21 23:15)
+  ✔ Transform influences by global transform @done(21-09-25 23:54)
+  ✔ General-purpose DOM transform sync @done(21-09-25 23:54)
+  ✔ General-purpose DOM position sync @done(21-09-24 17:39)
+  ✔ Multiple influences @done(21-09-25 23:54)
+  ✔ Free influence factor (+1, +0.2, -0.5, -1...) @done(21-09-25 23:54)
+  ✔ Click to focus influence @done(21-09-26 22:38)
+  ✔ Texel-aware relief factor @done(21-09-24 18:23)
+  ✔ Colormaps (parchment, globe, sci-fi, bleak, printable, obsidian, nightmare) @done(21-09-23 22:35)
+  ✔ Labels (just text: plain, banner) @started(21-09-26 12:32) @done(21-09-26 22:17) @lasted(9h45m39s)
+  ✔ Selected overlay controls @done(21-09-26 22:18)
+  ☐ Labels / points of interest @started(21-09-26 22:18)
+    ☐ Anchor position (corners, edges, center, icon) @started(21-09-26 22:33)
+    ☐ Font name, size, styles, color, letter spacing @started(21-09-26 22:33)
+    ☐ Icon name, size, color
+      https://remixicon.com
+    ☐ Icon position (corners, edges)
+    ☐ Shadows
+    ☐ Delete
+    ☐ Scale ratio (scale text/icon based on zoom)
+    ☐ Rotation
+  ☐ Regional colormaps
+  ☐ Stickers (compass rose, ships, monsters, birds)
+  ☐ Fonts (dynamic from Google Fonts, choose stylistic variants)
+  ☐ Sticker maps (e.g. mountains positioned based on heightmap)
+  ☐ Alternate waves (sine, V, grid, arcs)
+  ☐ Influence softness / curve
+  ☐ Per-influence warp factor
+  ✔ Waves LOD (prevent aliasing) @done(21-09-24 18:31)
+  ☐ Better waves LOD (control size)
+  ☐ "Postprocessing effects" (parchment, grid, vignette, linear gradient)
+  ☐ Clouds / fog of war / uncharted territory
+  ☐ Save / load (download as JSON, export PNG)
+    May need to quantize seed (integers)
+    Autosave to localstorage
+    Save/load from clipboard
+  ☐ Better framing UI (double sidebar?)
+  ☐ Show/hide UI
+  ☐ Show available hotkeys when hovering over stuff
+  ☐ Modal "steps" or "tabs" (topography, colors, POI)
+  ☐ Touch controls
+  ☐ Heightmap tonality
+  ☐ Regional heightmap tonality
+  ☐ HQ normal map
+  ☐ Noise parameters
+  ☐ Adjust bounding box
+  ☐ Examples (caldera, archipelago, two continents, large out-of-frame continent)
+  ☐ Voronoi political boundaries
+  ☐ Smooth zoom and fling
+    Svelte "tweening"
+  ☐ Undo randomize (or 3D noise)
+  ☐ Reset translate / zoom
+  ☐ Ditch REGL
+    view-source:https://glslsandbox.com/e#75248.1
+    https://github.com/mrdoob/glsl-sandbox
+    https://github.com/sveltejs/gl/blob/master/scene/Scene.svelte
+  ✔ LICENSE file w/attributions @done(21-09-26 16:34)
 
 Bugs:
-    ☐ Influences don't appear on load (until drag/zoom)
-    ☐ Waves get real weird when you zoom in too far
-    ☐ Firefox: Range inputs exceed container
-    ☐ Firefox: Mousewheel on canvas has no effect
-    ☐ Firefox: Palette pseudo-elements need styling
+  ☐ Influences don't appear on load (until drag/zoom)
+  ☐ Waves get real weird when you zoom in too far
+  ☐ Firefox: Range inputs exceed container
+  ☐ Firefox: Mousewheel on canvas has no effect
+  ☐ Firefox: Palette pseudo-elements need styling
 
 Cleanup:
-    ☐ Refactor into components
-    ☐ Better state handling / fewer reactivity hacks (perhaps stores?)
-    ☐ CSS transform2d instead of left/top?
-    ☐ Test in other browsers
+  ☐ Refactor into components
+  ☐ Better state handling / fewer reactivity hacks (perhaps stores?)
+  ☐ CSS transform2d instead of left/top?
+  ☐ Test in other browsers
 
 Launch:
-    ✔ Register mythicatlas.com @done(21-09-26 23:28)
-    ☐ Helpful intro splash
+  ✔ Register mythicatlas.com @done(21-09-26 23:28)
+  ☐ Helpful intro splash
 
 Way later:
-    ☐ Unlimited influences (by recompiling shader I guess)
-    ☐ Topo lines
-    ☐ Imagemap influences (custom textures)
-    ☐ Free transform influences (add? max?)
-    ☐ Resolution controls (work in low-res for lower-spec PCs)
-    ☐ Multiple selection
-    ☐ Roads and rivers
-    ☐ Discord / Twitter bot to generate random maps w/links
-    ☐ Export heightmap / other maps
-    ☐ Colormap gradient position editor
-    ☐ Noise buffer
-    ☐ Curved text
+  ☐ Unlimited influences (by recompiling shader I guess)
+  ☐ Topo lines
+  ☐ Imagemap influences (custom textures)
+  ☐ Free transform influences (add? max?)
+  ☐ Resolution controls (work in low-res for lower-spec PCs)
+  ☐ Multiple selection
+  ☐ Roads and rivers
+  ☐ Discord / Twitter bot to generate random maps w/links
+  ☐ Export heightmap / other maps
+  ☐ Colormap gradient position editor
+  ☐ Noise buffer
+  ☐ Curved text
