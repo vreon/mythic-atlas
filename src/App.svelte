@@ -20,6 +20,7 @@
     fakeHeightFactor,
     selectedOverlay,
     palette,
+    overlays,
   } from "./stores/globalControls.js";
 
   import PaletteInput from "./PaletteInput.svelte";
@@ -46,12 +47,10 @@
   $: paletteName !== "custom" && palette.set([...palettes[paletteName]]);
   $: paletteRGB = $palette.map(hexToVec3);
 
-  let overlays = [];
-
   function addLabel(text, transform) {
-    const label = {
+    const overlay = {
       type: "label",
-      name: "label" + overlays.length,
+      name: "label" + $overlays.length,
       text,
       fontSizeRem: 2,
       letterSpacingRem: 0,
@@ -63,15 +62,14 @@
         listeners: {},
       },
     };
-    overlays.push(label);
-    overlays = overlays;
-    return label;
+    overlays.update(o => [...o, overlay]);
+    return overlay;
   }
 
   function addInfluence(factor, transform) {
-    overlays.push({
+    let overlay = {
       type: "influence",
-      name: "influence" + overlays.length,
+      name: "influence" + $overlays.length,
       factor,
       transform,
       document: {
@@ -79,8 +77,9 @@
         extent: vec2.create(),
         listeners: {},
       },
-    });
-    overlays = overlays;
+    };
+    overlays.update(o => [...o, overlay]);
+    return overlay;
   }
 
   addInfluence(1.0, mat3.fromValues(0.6, 0, 0, 0, 0.6, 0, 0.4, 0.4, 0.6));
@@ -89,7 +88,7 @@
     addInfluence(0.0, mat3.fromValues(0.1, 0, 0, 0, 0.1, 0, -0.075, 0.05 + 0.125 * i, 0.1));
   }
 
-  $: overlays = overlays.map((o) => {
+  $: overlays.set($overlays.map((o) => {
     // TODO: I think multiplies here could be another transform
 
     vec2.transformMat3(o.document.position, vec2.create(), o.transform);
@@ -102,13 +101,13 @@
     vec2.subtract(o.document.extent, o.document.extent, o.document.position);
 
     return o;
-  });
+  }));
 
-  $: influenceTransforms = overlays.filter((o) => o.type === "influence").map((o) => o.transform);
+  $: influenceTransforms = $overlays.filter((o) => o.type === "influence").map((o) => o.transform);
 
   // BUG[uniform1fv]: this should be a float[] but regl chokes
   // See https://github.com/regl-project/regl/issues/611
-  $: influenceFactors = overlays
+  $: influenceFactors = $overlays
     .filter((o) => o.type === "influence")
     .map((o) => vec2.fromValues(o.factor, o.factor));
 
@@ -182,9 +181,8 @@
       delta,
       vec2.fromValues(1.0 / overlay.transform[0], 1.0 / overlay.transform[4])
     );
-    // vec2.multiply(delta, delta, vec2.fromValues(7, 8));
     mat3.translate(overlay.transform, overlay.transform, delta);
-    overlays = overlays;
+    overlays.set($overlays);
   }
 
   function overlayStopDrag(overlay) {
@@ -203,7 +201,7 @@
       let scale = vec2.fromValues(zoom, zoom); // <whispers> zoom zoom
       mat3.scale(overlay.transform, overlay.transform, scale);
     }
-    overlays = overlays;
+    overlays.set($overlays);
   }
 
   function randomize() {
@@ -306,7 +304,7 @@
 
 <svelte:window on:resize={resize} />
 
-{#each overlays as o}
+{#each $overlays as o}
   {#if o.type === "label"}
     <div
       class="overlay label"
@@ -433,7 +431,7 @@
     <div class="panel">
       <div><code>{$selectedOverlay.name}</code></div>
       {#if $selectedOverlay.type === "label"}
-        <textarea on:keyup={() => (overlays = overlays)} bind:value={$selectedOverlay.text} />
+        <textarea on:keyup={() => overlays.set($overlays)} bind:value={$selectedOverlay.text} />
         <label class="range">
           Size
           <input
@@ -442,7 +440,7 @@
             min="0"
             max="5"
             step="any"
-            on:input={() => (overlays = overlays)}
+            on:input={() => overlays.set($overlays)}
             bind:value={$selectedOverlay.fontSizeRem}
           />
         </label>
@@ -454,16 +452,16 @@
             min="0"
             max="5"
             step="any"
-            on:input={() => (overlays = overlays)}
+            on:input={() => overlays.set($overlays)}
             bind:value={$selectedOverlay.letterSpacingRem}
           />
         </label>
-        <select on:change={() => (overlays = overlays)} bind:value={$selectedOverlay.textAlign}>
+        <select on:change={() => overlays.set($overlays)} bind:value={$selectedOverlay.textAlign}>
           <option value="left">text left</option>
           <option value="center">text center</option>
           <option value="right">text right</option>
         </select>
-        <select on:change={() => (overlays = overlays)}>
+        <select on:change={() => overlays.set($overlays)}>
           <option value="top-left">anchor top left</option>
           <option value="top">anchor top</option>
           <option value="top-right">anchor top right</option>
