@@ -58,7 +58,7 @@ Wishlist:
   ✔ LICENSE file w/attributions @done(21-09-26 16:34)
 
 Bugs:
-  ☐ Influences don't appear on load (until drag/zoom)
+  ✔ Influences don't appear on load (until drag/zoom) @done(21-10-02 10:47)
   ☐ Waves get real weird when you zoom in too far
   ☐ Firefox: Range inputs exceed container
   ☐ Firefox: Mousewheel on canvas has no effect
