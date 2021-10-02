@@ -19,6 +19,7 @@
 
   import palettes from "./lib/palettes.js";
 
+  import MenuButton from "./MenuButton.svelte";
   import PaletteInput from "./PaletteInput.svelte";
 
   import ShuffleLine from 'svelte-remixicon/lib/icons/ShuffleLine.svelte';
@@ -271,7 +272,6 @@
     </div>
   {/if}
 
-
   {#if $selectedOverlay !== null}
     <div class="panel">
       <div><code>{$selectedOverlay.name}</code></div>
@@ -324,39 +324,18 @@
   {/if}
 
   {#if $mode === null}
-    <button on:click|preventDefault={randomize}>
-      <ShuffleLine style="width: 100%; height: 100%" />
-      <p>Random</p>
-    </button>
-    <button on:click|preventDefault={() => mode.set("topography")}>
-      <EarthLine style="width: 100%; height: 100%" />
-      <p>Topography</p>
-    </button>
-    <button on:click|preventDefault={() => mode.set("coloring")}>
-      <BrushLine style="width: 100%; height: 100%" />
-      <p>Coloring</p>
-    </button>
-    <button on:click|preventDefault={() => mode.set("labels")}>
-      <PriceTag3Line style="width: 100%; height: 100%" />
-      <p>Labels</p>
-    </button>
-    <button on:click|preventDefault={() => mode.set("effects")}>
-      <Loader2Line style="width: 100%; height: 100%" />
-      <p>Effects</p>
-    </button>
+    <MenuButton icon={ShuffleLine} label="Random" on:click={randomize} />
+    <MenuButton icon={EarthLine} label="Topography" on:click={() => mode.set("topography")} />
+    <MenuButton icon={BrushLine} label="Coloring" on:click={() => mode.set("coloring")} />
+    <MenuButton icon={PriceTag3Line} label="Labels" on:click={() => mode.set("labels")} />
+    <MenuButton icon={Loader2Line} label="Effects" on:click={() => mode.set("effects")} />
   {/if}
 
   {#if $mode !== null}
-    <button on:click|preventDefault={resetMode}>
-      <ArrowLeftLine style="width: 100%; height: 100%" />
-      <p>Back</p>
-    </button>
+    <MenuButton icon={ArrowLeftLine} label="Back" on:click={resetMode} />
   {/if}
 
-  <button>
-    <QuestionLine style="width: 100%; height: 100%" />
-    <p>Help</p>
-  </button>
+  <MenuButton icon={QuestionLine} label="Help" />
 
 </div>
 
@@ -377,15 +356,11 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    width: 220px;
     pointer-events: none;
-  }
-  .controls div, .controls button {
-    /* Yikes */
-    pointer-events: auto;
   }
 
   .controls > .panel {
+    pointer-events: auto;
     padding: 10px;
     background: #0d1017;
     box-shadow: 0 5px 10px hsla(0, 0%, 0%, 0.5);
@@ -394,6 +369,7 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    width: 220px;
   }
   .panel button {
     display: flex;
@@ -429,61 +405,7 @@
     font-weight: bold;
     padding-bottom: 5px;
   }
-
-  .controls > button {
-    width: 4em;
-    height: 4rem;
-    border: 0;
-    padding: 10px;    
-    background: rgb(15, 40, 66);
-    color: rgb(128, 166, 206);
-    border-style: solid;
-    border-width: 0 0 4px 0;
-    border-color: rgb(10, 27, 44);
-    border-radius: 10px;
-    transition: all 50ms linear;
-    cursor: pointer;
-    box-shadow: 0 0 20px 10px rgb(15, 40, 66) inset, 0 5px 10px hsla(0, 0%, 0%, 0.5);
-    position: relative;
-    align-self: end;
-  }
-
-  .controls > button:hover {
-    background: rgb(2, 80, 163);
-    color: white;
-    box-shadow: 0 0 20px 10px rgb(15, 40, 66) inset, 0 5px 10px rgba(5, 12, 73, 0.5);
-  }
-
-  .controls > button:active {
-    box-shadow: 0 0 10px 5px rgb(15, 40, 66) inset, 0 5px 10px rgba(5, 12, 73, 0.5);
-    border-bottom-width: 1px;
-    padding-top: 13px;
-  }
-
-  .controls > button > p {
-    display: none;
-    pointer-events: none;
-  }
-
-  .controls > button:hover > p {
-    pointer-events: none;
-    position: absolute;
-    margin: 0;
-    padding: 0;
-    left: 0;
-    top: 0;
-    height: 100%;
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    width: 10rem;
-    margin-left: -11rem;
-    color: white;
-    text-shadow: 0 0 10px black;
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
-
+  
   .overlay {
     user-select: none;
     -moz-user-select: none;
