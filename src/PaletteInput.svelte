@@ -27,6 +27,12 @@
     margin: 0;
     padding: 0;
   }
+  input[type="color"]::-moz-color-swatch {
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+    margin: 0;
+    padding: 0;
+  }
   input[type="color"]::-webkit-color-swatch-wrapper {
     padding: 0;
   }
