@@ -3,6 +3,7 @@
   import primitiveQuad from "primitive-quad";
   import { vec2, mat3 } from "gl-matrix";
   import { onMount } from "svelte";
+  import { fly } from 'svelte/transition';
 
   import frag from "./frag.glsl";
   import vert from "./vert.glsl";
@@ -11,18 +12,23 @@
 
   import { view, invView } from "./stores/view.js";
   import {
+    mode,
     seed,
     noiseFactor,
     reliefFactor,
     borderFactor,
     fakeHeightFactor,
-    showInfluences,
-    showLabels,
   } from "./stores/globalControls.js";
 
   import PaletteInput from "./PaletteInput.svelte";
   import TitleCard from './TitleCard.svelte';
   import ShuffleLine from 'svelte-remixicon/lib/icons/ShuffleLine.svelte';
+  import EarthLine from 'svelte-remixicon/lib/icons/EarthLine.svelte';
+  import BrushLine from 'svelte-remixicon/lib/icons/BrushLine.svelte';
+  import PriceTag3Line from 'svelte-remixicon/lib/icons/PriceTag3Line.svelte';
+  import QuestionLine from 'svelte-remixicon/lib/icons/QuestionLine.svelte';
+  import ArrowLeftLine from 'svelte-remixicon/lib/icons/ArrowLeftLine.svelte';
+  import Loader2Line from 'svelte-remixicon/lib/icons/Loader2Line.svelte';
 
   const quad = primitiveQuad();
   let gl;
@@ -115,6 +121,11 @@
       }
     }
   });
+
+  function resetMode() {
+    mode.set(null);
+    selectedOverlay = null;
+  }
 
   function canvasStartDrag(e) {
     canvasDragging = true;
@@ -296,11 +307,12 @@
 <svelte:window on:resize={resize} />
 
 {#each overlays as o}
-  {#if o.type === "label" && showLabels}
+  {#if o.type === "label"}
     <div
       class="overlay label"
       class:selected={selectedOverlay === o}
-      on:mousedown={(e) => overlayStartDrag(o, e)}
+      on:mousedown={(e) => $mode === "labels" && overlayStartDrag(o, e)}
+      on:dblclick={(e) => {mode.set("labels"); selectedOverlay = o;}}
       style="
         position: absolute;
         color: white;
@@ -319,7 +331,7 @@
     >
       {o.text}
     </div>
-  {:else if o.type === "influence" && $showInfluences}
+  {:else if o.type === "influence" && $mode === "topography"}
     <div
       class="overlay influence"
       class:selected={selectedOverlay === o}
@@ -340,69 +352,85 @@
   {/if}
 {/each}
 
-<div class="controls-area">
-  <div class="main-controls">
-    <label class="range">
-      Warp
-      <input style="padding: 0" type="range" min="0" max="1" step="any" bind:value={$noiseFactor} />
-    </label>
-    <label class="range">
-      Relief
-      <input
-        style="padding: 0"
-        type="range"
-        min="0"
-        max="1"
-        step="any"
-        bind:value={$reliefFactor}
-      />
-    </label>
-    <label class="range">
-      Border
-      <input
-        style="padding: 0"
-        type="range"
-        min="0"
-        max="1"
-        step="any"
-        value="0.05"
-        on:input={(v) => borderFactor.set(v.target.valueAsNumber)}
-      />
-    </label>
-    <PaletteInput bind:palette on:input={() => (paletteName = "custom")} />
-    <select bind:value={paletteName}>
-      <option value="custom">custom</option>
-      {#each Object.keys(palettes) as name}
-        <option value={name}>{name}</option>
-      {/each}
-    </select>
-    <label>
-      <input type="checkbox" bind:checked={$showInfluences} />
-      Show influences
-    </label>
-    <label>
-      <input type="checkbox" bind:checked={$showLabels} />
-      Show labels
-    </label>
-    <button on:click|preventDefault={randomize}>
-      <ShuffleLine />
-      Randomize
-    </button>
-  </div>
+<div class="controls">
 
-  <div>
-    <button
-      on:click|preventDefault={() => {
-        showLabels.set(true);
-        selectedOverlay = addLabel("New label");
-      }}
-    >
-      + Add label
-    </button>
-  </div>
+  {#if $mode === "topography"}
+    <div class="panel" in:fly={{x: 20}}>
+      <div class="header">
+        <EarthLine />
+        Topography
+      </div>
+      <label class="range">
+        Warp
+        <input style="padding: 0" type="range" min="0" max="1" step="any" bind:value={$noiseFactor} />
+      </label>
+      <label class="range">
+        Relief
+        <input
+          style="padding: 0"
+          type="range"
+          min="0"
+          max="1"
+          step="any"
+          bind:value={$reliefFactor}
+        />
+      </label>
+      <button on:click|preventDefault={() => seed.set(Math.random())}>
+        <ShuffleLine />
+        Random
+      </button>      
+    </div>
+  {:else if $mode === "coloring"}
+    <div class="panel" in:fly={{x: 20}}>
+      <div class="header">
+        <BrushLine />
+        Coloring
+      </div>
+      <PaletteInput bind:palette on:input={() => (paletteName = "custom")} />
+      <select bind:value={paletteName}>
+        <option value="custom">custom</option>
+        {#each Object.keys(palettes) as name}
+          <option value={name}>{name}</option>
+        {/each}
+      </select>
+    </div>
+  {:else if $mode === "effects"}
+    <div class="panel" in:fly={{x: 20}}>
+      <div class="header">
+        <Loader2Line />
+        Effects
+      </div>
+      <label class="range">
+        Border
+        <input
+          style="padding: 0"
+          type="range"
+          min="0"
+          max="1"
+          step="any"
+          bind:value={$borderFactor}
+        />
+      </label>
+    </div>
+  {:else if $mode === "labels"}
+    <div class="panel" in:fly={{x: 20}}>
+      <div class="header">
+        <PriceTag3Line />
+        Labels
+      </div>      
+      <button
+        on:click|preventDefault={() => {
+          selectedOverlay = addLabel("New label");
+        }}
+      >
+        + Add label
+      </button>
+    </div>
+  {/if}
+
 
   {#if selectedOverlay}
-    <div>
+    <div class="panel">
       <div><code>{selectedOverlay.name}</code></div>
       {#if selectedOverlay.type === "label"}
         <textarea on:keyup={() => (overlays = overlays)} bind:value={selectedOverlay.text} />
@@ -451,6 +479,42 @@
       {/if}
     </div>
   {/if}
+
+  {#if $mode === null}
+    <button on:click|preventDefault={randomize}>
+      <ShuffleLine style="width: 100%; height: 100%" />
+      <p>Random</p>
+    </button>
+    <button on:click|preventDefault={() => mode.set("topography")}>
+      <EarthLine style="width: 100%; height: 100%" />
+      <p>Topography</p>
+    </button>
+    <button on:click|preventDefault={() => mode.set("coloring")}>
+      <BrushLine style="width: 100%; height: 100%" />
+      <p>Coloring</p>
+    </button>
+    <button on:click|preventDefault={() => mode.set("labels")}>
+      <PriceTag3Line style="width: 100%; height: 100%" />
+      <p>Labels</p>
+    </button>
+    <button on:click|preventDefault={() => mode.set("effects")}>
+      <Loader2Line style="width: 100%; height: 100%" />
+      <p>Effects</p>
+    </button>
+  {/if}
+
+  {#if $mode !== null}
+    <button on:click|preventDefault={resetMode}>
+      <ArrowLeftLine style="width: 100%; height: 100%" />
+      <p>Back</p>
+    </button>
+  {/if}
+
+  <button>
+    <QuestionLine style="width: 100%; height: 100%" />
+    <p>Help</p>
+  </button>
+
 </div>
 
 <!--
@@ -482,6 +546,7 @@
   bind:this={element}
   on:mousedown={canvasStartDrag}
   on:mousewheel={canvasZoom}
+  on:dblclick={resetMode}
   class:dragging={canvasDragging}
 />
 
@@ -490,9 +555,6 @@
     padding: 0;
     overflow: hidden;
     touch-action: none;
-    /* font-family: 'Patua One', serif; */
-    /* font-family: 'Alegreya', serif; */
-    --hue: 210deg;
   }
   canvas {
     width: 100%;
@@ -512,7 +574,7 @@
     padding: 0;
   }
 
-  .controls-area {
+  .controls {
     position: absolute;
     padding: 10px;
     right: 10px;
@@ -521,8 +583,14 @@
     flex-direction: column;
     gap: 10px;
     width: 220px;
+    pointer-events: none;
   }
-  .controls-area > div {
+  .controls div, .controls button {
+    /* Yikes */
+    pointer-events: auto;
+  }
+
+  .controls > .panel {
     padding: 10px;
     background: #0d1017;
     box-shadow: 0 5px 10px hsla(0, 0%, 0%, 0.5);
@@ -532,25 +600,93 @@
     flex-direction: column;
     gap: 5px;
   }
-  .controls-area button, .controls-area select {
+  .panel button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+  .panel button, .panel select {
     border: 0;
     padding: 5px;
     background: rgb(15, 40, 66);
     color: white;
     box-shadow: 0 2px rgb(10, 27, 44);
   }
-  .controls-area button:hover, .controls-area select:hover {
+  .panel button:hover, .panel select:hover {
     background: rgb(17, 45, 75);
   }
-  .controls-area option {
+  .panel option {
     color: white;
     background: rgb(15, 40, 66);
   }
-  .controls-area label.range {
+  .panel label.range {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 5px;
+  }
+  .panel .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #333;
+    font-weight: bold;
+    padding-bottom: 5px;
+  }
+
+  .controls > button {
+    width: 4em;
+    height: 4rem;
+    border: 0;
+    padding: 10px;    
+    background: rgb(15, 40, 66);
+    color: rgb(128, 166, 206);
+    border-style: solid;
+    border-width: 0 0 4px 0;
+    border-color: rgb(10, 27, 44);
+    border-radius: 10px;
+    transition: all 50ms linear;
+    cursor: pointer;
+    box-shadow: 0 0 20px 10px rgb(15, 40, 66) inset, 0 5px 10px hsla(0, 0%, 0%, 0.5);
+    position: relative;
+    align-self: end;
+  }
+
+  .controls > button:hover {
+    background: rgb(2, 80, 163);
+    color: white;
+    box-shadow: 0 0 20px 10px rgb(15, 40, 66) inset, 0 5px 10px rgba(5, 12, 73, 0.5);
+  }
+
+  .controls > button:active {
+    box-shadow: 0 0 10px 5px rgb(15, 40, 66) inset, 0 5px 10px rgba(5, 12, 73, 0.5);
+    border-bottom-width: 1px;
+    padding-top: 13px;
+  }
+
+  .controls > button > p {
+    display: none;
+    pointer-events: none;
+  }
+
+  .controls > button:hover > p {
+    pointer-events: none;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    left: 0;
+    top: 0;
+    height: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    width: 10rem;
+    margin-left: -11rem;
+    color: white;
+    text-shadow: 0 0 10px black;
+    font-size: 1.2rem;
+    font-weight: bold;
   }
 
   .overlay {

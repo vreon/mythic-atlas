@@ -37,10 +37,8 @@ Wishlist:
     May need to quantize seed (integers)
     Autosave to localstorage
     Save/load from clipboard
-  ☐ Better framing UI (double sidebar?)
-  ☐ Show/hide UI
+  ✔ Better UI: Single column of chunky buttons @done(21-10-02 01:17)
   ☐ Show available hotkeys when hovering over stuff
-  ☐ Modal "steps" or "tabs" (topography, colors, POI)
   ☐ Touch controls
   ☐ Heightmap tonality
   ☐ Regional heightmap tonality
@@ -74,7 +72,8 @@ Cleanup:
 
 Launch:
   ✔ Register mythicatlas.com @done(21-09-26 23:28)
-  ☐ Helpful intro splash
+  ☐ Help screen
+  ☐ Favicon
 
 Way later:
   ☐ Unlimited influences (by recompiling shader I guess)
