@@ -55,6 +55,9 @@
   }
 
   function canvasStartDrag(e) {
+    if (e.button !== 0) {
+      return;
+    }
     canvasDragging = true;
     selectedOverlay.set(null);
     addEventListener("mouseup", canvasStopDrag);
@@ -71,7 +74,10 @@
     view.translate(vec2.negate(vec2.create(), delta));
   }
 
-  function canvasStopDrag() {
+  function canvasStopDrag(e) {
+    if (e.button !== 0) {
+      return;
+    }
     canvasDragging = false;
     removeEventListener("mouseup", canvasStopDrag);
     removeEventListener("mousemove", canvasDrag);

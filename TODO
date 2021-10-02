@@ -63,6 +63,7 @@ Bugs:
   ☐ Firefox: Range inputs exceed container
   ☐ Firefox: Mousewheel on canvas has no effect
   ☐ Firefox: Palette pseudo-elements need styling
+  ☐ Heightmaps > 1.0 look silly during fakeHeightFactor transitions
 
 Cleanup:
   ☐ Refactor into components

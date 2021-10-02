@@ -91,8 +91,11 @@
 
 
   function overlayStartDrag(overlay, e) {
+    if (e.button !== 0) {
+      return;
+    }
     selectedOverlay.set(overlay);
-    overlay.document.listeners.stopDrag = () => overlayStopDrag(overlay);
+    overlay.document.listeners.stopDrag = () => overlayStopDrag(overlay, e);
     overlay.document.listeners.drag = (e) => overlayDrag(overlay, e);
     addEventListener("mouseup", overlay.document.listeners.stopDrag);
     addEventListener("mousemove", overlay.document.listeners.drag);
@@ -115,7 +118,10 @@
     overlays.set($overlays);
   }
 
-  function overlayStopDrag(overlay) {
+  function overlayStopDrag(overlay, e) {
+    if (e.button !== 0) {
+      return;
+    }
     removeEventListener("mouseup", overlay.document.listeners.stopDrag);
     removeEventListener("mousemove", overlay.document.listeners.drag);
   }
