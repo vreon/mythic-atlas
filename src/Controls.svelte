@@ -273,7 +273,7 @@
   {/if}
 
   {#if $selectedOverlay !== null}
-    <div class="panel">
+    <div class="panel" in:fly={{x: 20}}>
       <div><code>{$selectedOverlay.name}</code></div>
       {#if $selectedOverlay.type === "label"}
         <textarea on:keyup={() => overlays.set($overlays)} bind:value={$selectedOverlay.text} />
