@@ -15,11 +15,13 @@
     noiseFactor,
     reliefFactor,
     borderFactor,
+    fakeHeightFactor,
     showInfluences,
     showLabels,
   } from "./stores/globalControls.js";
 
   import PaletteInput from "./PaletteInput.svelte";
+  import TitleCard from './TitleCard.svelte';
 
   const quad = primitiveQuad();
   let gl;
@@ -30,7 +32,7 @@
 
   let canvasDragging = false;
 
-  let paletteName = "plain";
+  let paletteName = "verdant";
   let palette = [];
 
   $: paletteName !== "custom" && (palette = [...palettes[paletteName]]);
@@ -74,8 +76,8 @@
     overlays = overlays;
   }
 
-  addInfluence(1.0, mat3.fromValues(0.5, 0, 0, 0, 0.5, 0, 0.4, 0.4, 0.5));
-  addInfluence(-1.0, mat3.fromValues(0.3, 0, 0, 0, 0.3, 0, 0.55, 0.55, 0.3));
+  addInfluence(1.0, mat3.fromValues(0.6, 0, 0, 0, 0.6, 0, 0.4, 0.4, 0.6));
+  addInfluence(-1.0, mat3.fromValues(0.4, 0, 0, 0, 0.4, 0, 0.65, 0.65, 0.4));
   for (let i = 0; i < 7; i++) {
     addInfluence(0.0, mat3.fromValues(0.1, 0, 0, 0, 0.1, 0, -0.075, 0.05 + 0.125 * i, 0.1));
   }
@@ -193,7 +195,11 @@
   }
 
   function randomize() {
-    seed.set(Math.random());
+    fakeHeightFactor.set(0.0, {duration: 400});
+    setTimeout(() => {
+      seed.set(Math.random());
+      fakeHeightFactor.set(1.0, {duration: 1000});
+    }, 500);
     console.log(palette);
   }
 
@@ -229,6 +235,7 @@
         noiseFactor: regl.prop("noiseFactor"),
         reliefFactor: regl.prop("reliefFactor"),
         borderFactor: regl.prop("borderFactor"),
+        fakeHeightFactor: regl.prop("fakeHeightFactor"),
         paletteDeepWater: regl.prop("paletteDeepWater"),
         paletteShallowWater: regl.prop("paletteShallowWater"),
         paletteShore: regl.prop("paletteShore"),
@@ -270,6 +277,7 @@
           noiseFactor: $noiseFactor,
           reliefFactor: $reliefFactor,
           borderFactor: $borderFactor,
+          fakeHeightFactor: $fakeHeightFactor,
           paletteDeepWater: paletteRGB[0],
           paletteShallowWater: paletteRGB[1],
           paletteShore: paletteRGB[2],
@@ -356,7 +364,8 @@
         min="0"
         max="1"
         step="any"
-        bind:value={$borderFactor}
+        value="0.05"
+        on:input={(v) => borderFactor.set(v.target.valueAsNumber)}
       />
     </label>
     <PaletteInput bind:palette on:input={() => (paletteName = "custom")} />
@@ -460,6 +469,10 @@
   </div>
 </div>
 -->
+
+<!-- -->
+<TitleCard />
+<!-- -->
 
 <canvas
   bind:this={element}

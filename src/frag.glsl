@@ -14,6 +14,7 @@ uniform vec2 influenceFactors[NUM_INFLUENCES];
 uniform float noiseFactor;
 uniform float reliefFactor;
 uniform float borderFactor;
+uniform float fakeHeightFactor;
 
 uniform vec3 paletteDeepWater;
 uniform vec3 paletteShallowWater;
@@ -113,7 +114,7 @@ void main() {
     vec2 uv = vUv;
     uv = (canvasTransform * vec3(uv, 1.0)).xy;
 
-    vec2 warped_uv = perlin_warp(uv, noiseFactor, vec2(4.0), 0.5, seed);
+    vec2 warped_uv = perlin_warp(uv - vec2(0.0, (1.0 - fakeHeightFactor) * 0.02), noiseFactor, vec2(4.0), 0.5, seed);
 
     float heightmap = 0.0;
     for (int i = 0; i < NUM_INFLUENCES; i++) {
@@ -124,6 +125,8 @@ void main() {
         vec2 offset_warped_uv = warped_uv - influencePos + vec2(0.5, 0.5);
         heightmap += shape_circle(offset_warped_uv, influenceScale, 1.0) * influenceFactor;
     }
+
+    heightmap -= 1.0 - fakeHeightFactor;
     
     float land_mask = heightmap; // todo clamp?
     float land_mask_hard = step(0.094, land_mask);
