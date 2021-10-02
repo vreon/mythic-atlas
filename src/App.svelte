@@ -22,6 +22,7 @@
 
   import PaletteInput from "./PaletteInput.svelte";
   import TitleCard from './TitleCard.svelte';
+  import ShuffleLine from 'svelte-remixicon/lib/icons/ShuffleLine.svelte';
 
   const quad = primitiveQuad();
   let gl;
@@ -383,7 +384,10 @@
       <input type="checkbox" bind:checked={$showLabels} />
       Show labels
     </label>
-    <button on:click|preventDefault={randomize}>Randomize</button>
+    <button on:click|preventDefault={randomize}>
+      <ShuffleLine />
+      Randomize
+    </button>
   </div>
 
   <div>
@@ -486,6 +490,9 @@
     padding: 0;
     overflow: hidden;
     touch-action: none;
+    /* font-family: 'Patua One', serif; */
+    /* font-family: 'Alegreya', serif; */
+    --hue: 210deg;
   }
   canvas {
     width: 100%;
@@ -502,19 +509,9 @@
   select,
   textarea {
     margin: 0;
+    padding: 0;
   }
-  button,
-  select {
-    border: 2px solid #aaa;
-    border-radius: 4px;
-    background: #f2f2f2;
-  }
-  label.range {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 5px;
-  }
+
   .controls-area {
     position: absolute;
     padding: 10px;
@@ -527,13 +524,35 @@
   }
   .controls-area > div {
     padding: 10px;
-    background: rgba(255, 255, 255, 0.5);
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    border-radius: 5px;
+    background: #0d1017;
+    box-shadow: 0 5px 10px hsla(0, 0%, 0%, 0.5);
+    color: #bfbdb6;
+    border-radius: 3px;
     display: flex;
     flex-direction: column;
     gap: 5px;
   }
+  .controls-area button, .controls-area select {
+    border: 0;
+    padding: 5px;
+    background: rgb(15, 40, 66);
+    color: white;
+    box-shadow: 0 2px rgb(10, 27, 44);
+  }
+  .controls-area button:hover, .controls-area select:hover {
+    background: rgb(17, 45, 75);
+  }
+  .controls-area option {
+    color: white;
+    background: rgb(15, 40, 66);
+  }
+  .controls-area label.range {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+  }
+
   .overlay {
     user-select: none;
     -moz-user-select: none;
