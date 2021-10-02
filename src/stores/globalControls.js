@@ -14,3 +14,5 @@ export const fakeHeightFactor = tweened(1.0, {
 export const selectedOverlay = writable(null);
 export const palette = writable([]);
 export const overlays = writable([]);
+export const canvasWidth = writable(0);
+export const canvasHeight = writable(0);

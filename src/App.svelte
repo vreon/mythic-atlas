@@ -21,6 +21,8 @@
     selectedOverlay,
     palette,
     overlays,
+    canvasWidth,
+    canvasHeight
   } from "./stores/globalControls.js";
 
   import PaletteInput from "./PaletteInput.svelte";
@@ -36,8 +38,6 @@
   const quad = primitiveQuad();
   let gl;
   let element;
-  let width = 0;
-  let height = 0;
   let regl;
 
   let canvasDragging = false;
@@ -93,11 +93,11 @@
 
     vec2.transformMat3(o.document.position, vec2.create(), o.transform);
     vec2.transformMat3(o.document.position, o.document.position, $invView);
-    vec2.multiply(o.document.position, o.document.position, vec2.fromValues(width, height));
+    vec2.multiply(o.document.position, o.document.position, vec2.fromValues($canvasWidth, $canvasHeight));
 
     vec2.transformMat3(o.document.extent, vec2.fromValues(1.0, 1.0), o.transform);
     vec2.transformMat3(o.document.extent, o.document.extent, $invView);
-    vec2.multiply(o.document.extent, o.document.extent, vec2.fromValues(width, height));
+    vec2.multiply(o.document.extent, o.document.extent, vec2.fromValues($canvasWidth, $canvasHeight));
     vec2.subtract(o.document.extent, o.document.extent, o.document.position);
 
     return o;
@@ -134,7 +134,7 @@
   }
 
   function normalizedScreenCoordinates(x, y) {
-    return vec2.fromValues(x / width, y / height);
+    return vec2.fromValues(x / $canvasWidth, y / $canvasHeight);
   }
 
   function canvasDrag(e) {
@@ -223,9 +223,11 @@
       // Check if the canvas is not the same size.
       if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
         // Make the canvas the same size
-        width = canvas.width = displayWidth;
-        height = canvas.height = displayHeight;
-        view.resize(width, height);
+        canvas.width = displayWidth;
+        canvasWidth.set(displayWidth);
+        canvas.height = displayHeight;
+        canvasHeight.set(displayHeight);
+        view.resize(displayWidth, displayHeight);
       }
       gl.viewport(0, 0, canvas.width, canvas.height);
     }
