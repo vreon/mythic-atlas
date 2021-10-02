@@ -11,3 +11,5 @@ export const fakeHeightFactor = tweened(1.0, {
   duration: 0,
   easing: quadOut,
 });
+export const selectedOverlay = writable(null);
+export const palette = writable([]);

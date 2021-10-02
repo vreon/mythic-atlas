@@ -18,6 +18,8 @@
     reliefFactor,
     borderFactor,
     fakeHeightFactor,
+    selectedOverlay,
+    palette,
   } from "./stores/globalControls.js";
 
   import PaletteInput from "./PaletteInput.svelte";
@@ -40,13 +42,11 @@
   let canvasDragging = false;
 
   let paletteName = "verdant";
-  let palette = [];
 
-  $: paletteName !== "custom" && (palette = [...palettes[paletteName]]);
-  $: paletteRGB = palette.map(hexToVec3);
+  $: paletteName !== "custom" && palette.set([...palettes[paletteName]]);
+  $: paletteRGB = $palette.map(hexToVec3);
 
   let overlays = [];
-  let selectedOverlay;
 
   function addLabel(text, transform) {
     const label = {
@@ -124,12 +124,12 @@
 
   function resetMode() {
     mode.set(null);
-    selectedOverlay = null;
+    selectedOverlay.set(null);
   }
 
   function canvasStartDrag(e) {
     canvasDragging = true;
-    selectedOverlay = null;
+    selectedOverlay.set(null);
     addEventListener("mouseup", canvasStopDrag);
     addEventListener("mousemove", canvasDrag);
   }
@@ -162,7 +162,7 @@
   }
 
   function overlayStartDrag(overlay, e) {
-    selectedOverlay = overlay;
+    selectedOverlay.set(overlay);
     overlay.document.listeners.stopDrag = () => overlayStopDrag(overlay);
     overlay.document.listeners.drag = (e) => overlayDrag(overlay, e);
     addEventListener("mouseup", overlay.document.listeners.stopDrag);
@@ -212,7 +212,7 @@
       seed.set(Math.random());
       fakeHeightFactor.set(1.0, {duration: 1000});
     }, 500);
-    console.log(palette);
+    console.log($palette);
   }
 
   function resize() {
@@ -310,9 +310,9 @@
   {#if o.type === "label"}
     <div
       class="overlay label"
-      class:selected={selectedOverlay === o}
+      class:selected={$selectedOverlay === o}
       on:mousedown={(e) => $mode === "labels" && overlayStartDrag(o, e)}
-      on:dblclick={(e) => {mode.set("labels"); selectedOverlay = o;}}
+      on:dblclick={(e) => {mode.set("labels"); selectedOverlay.set(o);}}
       style="
         position: absolute;
         color: white;
@@ -334,7 +334,7 @@
   {:else if o.type === "influence" && $mode === "topography"}
     <div
       class="overlay influence"
-      class:selected={selectedOverlay === o}
+      class:selected={$selectedOverlay === o}
       on:mousedown={(e) => overlayStartDrag(o, e)}
       on:mousewheel={(e) => overlayScale(o, e)}
       style="
@@ -386,7 +386,7 @@
         <BrushLine />
         Coloring
       </div>
-      <PaletteInput bind:palette on:input={() => (paletteName = "custom")} />
+      <PaletteInput bind:palette={$palette} on:input={() => (paletteName = "custom")} />
       <select bind:value={paletteName}>
         <option value="custom">custom</option>
         {#each Object.keys(palettes) as name}
@@ -420,7 +420,7 @@
       </div>      
       <button
         on:click|preventDefault={() => {
-          selectedOverlay = addLabel("New label");
+          selectedOverlay.set(addLabel("New label"));
         }}
       >
         + Add label
@@ -429,11 +429,11 @@
   {/if}
 
 
-  {#if selectedOverlay}
+  {#if $selectedOverlay !== null}
     <div class="panel">
-      <div><code>{selectedOverlay.name}</code></div>
-      {#if selectedOverlay.type === "label"}
-        <textarea on:keyup={() => (overlays = overlays)} bind:value={selectedOverlay.text} />
+      <div><code>{$selectedOverlay.name}</code></div>
+      {#if $selectedOverlay.type === "label"}
+        <textarea on:keyup={() => (overlays = overlays)} bind:value={$selectedOverlay.text} />
         <label class="range">
           Size
           <input
@@ -443,7 +443,7 @@
             max="5"
             step="any"
             on:input={() => (overlays = overlays)}
-            bind:value={selectedOverlay.fontSizeRem}
+            bind:value={$selectedOverlay.fontSizeRem}
           />
         </label>
         <label class="range">
@@ -455,10 +455,10 @@
             max="5"
             step="any"
             on:input={() => (overlays = overlays)}
-            bind:value={selectedOverlay.letterSpacingRem}
+            bind:value={$selectedOverlay.letterSpacingRem}
           />
         </label>
-        <select on:change={() => (overlays = overlays)} bind:value={selectedOverlay.textAlign}>
+        <select on:change={() => (overlays = overlays)} bind:value={$selectedOverlay.textAlign}>
           <option value="left">text left</option>
           <option value="center">text center</option>
           <option value="right">text right</option>
@@ -474,7 +474,7 @@
           <option value="bottom">anchor bottom</option>
           <option value="bottom-right">anchor bottom right</option>
         </select>
-      {:else if selectedOverlay.type === "influence"}
+      {:else if $selectedOverlay.type === "influence"}
         <div>(to do...)</div>
       {/if}
     </div>
