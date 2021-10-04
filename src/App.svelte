@@ -1,9 +1,11 @@
 <script>
   import Canvas from './Canvas.svelte';
   import Controls from './Controls.svelte';
+  import Overlays from './Overlays.svelte';
   import TitleCard from './TitleCard.svelte';
 </script>
 
+<Overlays />
 <Controls />
 <!-- -->
 <TitleCard />
