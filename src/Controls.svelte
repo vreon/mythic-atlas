@@ -22,6 +22,7 @@
   import MenuButton from "./MenuButton.svelte";
   import PaletteInput from "./PaletteInput.svelte";
   import Influence from "./Influence.svelte";
+  import Label from "./Label.svelte";
 
   import ShuffleLine from 'svelte-remixicon/lib/icons/ShuffleLine.svelte';
   import EarthLine from 'svelte-remixicon/lib/icons/EarthLine.svelte';
@@ -159,28 +160,17 @@
 
 {#each $overlays as o}
   {#if o.type === "label"}
-    <div
-      class="overlay label"
-      class:selected={$selectedOverlay === o}
+    <Label
+      selected={$selectedOverlay === o}
       on:mousedown={(e) => $mode === "labels" && overlayStartDrag(o, e)}
       on:dblclick={(e) => {mode.set("labels"); selectedOverlay.set(o);}}
-      style="
-        position: absolute;
-        color: white;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 1.0);
-        font-size: {o.fontSizeRem}rem;
-        line-height: {o.fontSizeRem}rem;
-        letter-spacing: {o.letterSpacingRem}rem;
-        text-align: {o.textAlign};
-        font-family: 'Alegreya', serif;
-        font-weight: 800;
-        font-style: italic;
-        white-space: pre;
-        transform: translate({o.document.position[0]}px, {o.document.position[1]}px);
-      "
-    >
-      {o.text}
-    </div>
+      x={o.document.position[0]}
+      y={o.document.position[1]}
+      fontSizeRem={o.fontSizeRem}
+      letterSpacingRem={o.letterSpacingRem}
+      textAlign={o.textAlign}
+      text={o.text}
+    />
   {:else if o.type === "influence" && $mode === "topography"}
     <Influence
       selected={$selectedOverlay === o}
@@ -407,24 +397,6 @@
     font-weight: bold;
     padding-bottom: 5px;
   }
-  
-  .overlay {
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-  }
-  .overlay.label {
-    border: 2px solid transparent;
-    padding: 5px;
-  }
-  .overlay.label:hover {
-    border-color: rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
-  }
-  .overlay.label.selected {
-    border-color: rgba(0, 64, 128, 1);
-    box-shadow: 0 0 10px rgba(0, 128, 255, 1);
-    background: rgba(0, 128, 255, 0.2);
-  }
+
 
   </style>
