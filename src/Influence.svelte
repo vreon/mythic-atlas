@@ -12,8 +12,7 @@
   on:mousedown
   on:wheel
   style="
-    left: {x - width / 2}px;
-    top: {y - height / 2}px;
+    transform: translate({x - width / 2}px, {y - height / 2}px);
     width: {width}px;
     height: {height}px;
   "

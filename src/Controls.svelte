@@ -176,8 +176,7 @@
         font-weight: 800;
         font-style: italic;
         white-space: pre;
-        left: {o.document.position[0]}px;
-        top: {o.document.position[1]}px;
+        transform: translate({o.document.position[0]}px, {o.document.position[1]}px);
       "
     >
       {o.text}
