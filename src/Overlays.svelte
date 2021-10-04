@@ -37,18 +37,18 @@
     })
   );
 
-  function overlayStartDrag(overlay, e) {
+  function startDrag(overlay, e) {
     if (e.button !== 0) {
       return;
     }
     selectedOverlay.set(overlay);
-    overlay.document.listeners.stopDrag = () => overlayStopDrag(overlay, e);
-    overlay.document.listeners.drag = (e) => overlayDrag(overlay, e);
+    overlay.document.listeners.stopDrag = () => stopDrag(overlay, e);
+    overlay.document.listeners.drag = (e) => drag(overlay, e);
     addEventListener("mouseup", overlay.document.listeners.stopDrag);
     addEventListener("mousemove", overlay.document.listeners.drag);
   }
 
-  function overlayDrag(overlay, e) {
+  function drag(overlay, e) {
     // TODO: devicePixelRatio here might be a browser compat issue
     // https://crbug.com/1092358
     let delta = vec2.fromValues(
@@ -65,7 +65,7 @@
     overlays.set($overlays);
   }
 
-  function overlayStopDrag(overlay, e) {
+  function stopDrag(overlay, e) {
     if (e.button !== 0) {
       return;
     }
@@ -73,7 +73,7 @@
     removeEventListener("mousemove", overlay.document.listeners.drag);
   }
 
-  function overlayScale(overlay, e) {
+  function scale(overlay, e) {
     let step = 0.1;
     if (e.shiftKey) {
       overlay.factor += step * Math.sign(e.wheelDeltaY);
@@ -92,7 +92,7 @@
   {#if o.type === "label"}
     <Label
       selected={$selectedOverlay === o}
-      on:mousedown={(e) => $mode === "labels" && overlayStartDrag(o, e)}
+      on:mousedown={(e) => $mode === "labels" && startDrag(o, e)}
       on:dblclick={(e) => {
         mode.set("labels");
         selectedOverlay.set(o);
@@ -107,8 +107,8 @@
   {:else if o.type === "influence" && $mode === "topography"}
     <Influence
       selected={$selectedOverlay === o}
-      on:mousedown={(e) => overlayStartDrag(o, e)}
-      on:wheel={(e) => overlayScale(o, e)}
+      on:mousedown={(e) => startDrag(o, e)}
+      on:wheel={(e) => scale(o, e)}
       x={o.document.position[0]}
       y={o.document.position[1]}
       width={o.document.extent[0]}
