@@ -66,9 +66,9 @@ Bugs:
   ☐ Heightmaps > 1.0 look silly during fakeHeightFactor transitions
 
 Cleanup:
-  ☐ Refactor into components
-  ☐ Better state handling / fewer reactivity hacks (perhaps stores?)
-  ☐ CSS transform2d instead of left/top?
+  ✔ Refactor into components @done(21-10-03 22:41)
+  ✔ Better state handling / fewer reactivity hacks (perhaps stores?) @done(21-10-03 22:41)
+  ✔ CSS transform2d instead of left/top? @done(21-10-03 22:41)
   ☐ Test in other browsers
 
 Launch:
