@@ -213,11 +213,11 @@
         Random
       </button>      
     </div>
-  {:else if $mode === "coloring"}
+  {:else if $mode === "colors"}
     <div class="panel" in:fly={{x: 20}}>
       <div class="header">
         <BrushLine />
-        Coloring
+        Colors
       </div>
       <PaletteInput bind:palette={$palette} on:input={() => (paletteName = "custom")} />
       <select bind:value={paletteName}>
@@ -315,7 +315,7 @@
   {#if $mode === null}
     <MenuButton icon={ShuffleLine} label="Random" on:click={randomize} />
     <MenuButton icon={EarthLine} label="Topography" on:click={() => mode.set("topography")} />
-    <MenuButton icon={BrushLine} label="Coloring" on:click={() => mode.set("coloring")} />
+    <MenuButton icon={BrushLine} label="Colors" on:click={() => mode.set("colors")} />
     <MenuButton icon={PriceTag3Line} label="Labels" on:click={() => mode.set("labels")} />
     <MenuButton icon={Loader2Line} label="Effects" on:click={() => mode.set("effects")} />
   {/if}
