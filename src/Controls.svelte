@@ -1,5 +1,4 @@
 <script>
-  import { fly } from "svelte/transition";
   import { vec2, mat3 } from "gl-matrix";
 
   import { view, invView } from "./stores/view.js";
