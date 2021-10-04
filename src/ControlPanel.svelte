@@ -1,8 +1,8 @@
 <script>
   import { fly } from "svelte/transition";
 
-  export let title;
-  export let icon;
+  export let title = null;
+  export let icon = null;
 </script>
 
 <section in:fly={{ x: 20 }}>
