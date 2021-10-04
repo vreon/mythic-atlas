@@ -26,7 +26,7 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-    /* width: 220px; */
+    width: 220px;
   }
   div {
     display: flex;
