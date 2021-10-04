@@ -21,6 +21,7 @@
 
   import MenuButton from "./MenuButton.svelte";
   import PaletteInput from "./PaletteInput.svelte";
+  import Influence from "./Influence.svelte";
 
   import ShuffleLine from 'svelte-remixicon/lib/icons/ShuffleLine.svelte';
   import EarthLine from 'svelte-remixicon/lib/icons/EarthLine.svelte';
@@ -182,23 +183,16 @@
       {o.text}
     </div>
   {:else if o.type === "influence" && $mode === "topography"}
-    <div
-      class="overlay influence"
-      class:selected={$selectedOverlay === o}
+    <Influence
+      selected={$selectedOverlay === o}
       on:mousedown={(e) => overlayStartDrag(o, e)}
       on:wheel={(e) => overlayScale(o, e)}
-      style="
-        position:absolute;
-        overflow: hidden;
-        cursor: move;
-        left: {o.document.position[0] - o.document.extent[0] / 2}px;
-        top: {o.document.position[1] - o.document.extent[1] / 2}px;
-        width: {o.document.extent[0]}px;
-        height: {o.document.extent[1]}px;
-      "
-    >
-      {o.factor > 0 ? "+" : ""}{Math.round(o.factor * 100) / 100}
-    </div>
+      x={o.document.position[0]}
+      y={o.document.position[1]}
+      width={o.document.extent[0]}
+      height={o.document.extent[1]}
+      text="{o.factor > 0 ? "+" : ""}{Math.round(o.factor * 100) / 100}"
+    />
   {/if}
 {/each}
 
@@ -433,24 +427,5 @@
     box-shadow: 0 0 10px rgba(0, 128, 255, 1);
     background: rgba(0, 128, 255, 0.2);
   }
-  .influence {
-    border: 2px solid rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 2rem;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 1);
-    border-radius: 99999px;
-    font-weight: bold;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-  }
-  .influence:hover {
-    border-color: rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
-  }
-  .influence.selected {
-    border-color: rgba(0, 64, 128, 1);
-    box-shadow: 0 0 10px rgba(0, 128, 255, 1);
-  }
+
   </style>
