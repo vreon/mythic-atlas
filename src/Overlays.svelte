@@ -104,7 +104,7 @@
       textAlign={o.textAlign}
       text={o.text}
     />
-  {:else if o.type === "influence" && $mode === "topography"}
+  {:else if o.type === "topoInfluence" && $mode === "topography"}
     <Influence
       selected={$selectedOverlay === o}
       on:mousedown={(e) => startDrag(o, e)}

@@ -7,10 +7,10 @@ varying vec2 vUv;
 uniform float time;
 uniform float seed;
 uniform mat3 canvasTransform;
-uniform mat3 influenceTransforms[NUM_INFLUENCES];
+uniform mat3 topoInfluenceTransforms[NUM_INFLUENCES];
 // BUG[uniform1fv]: this should be a float[] but regl chokes
 // See https://github.com/regl-project/regl/issues/611
-uniform vec2 influenceFactors[NUM_INFLUENCES];
+uniform vec2 topoInfluenceFactors[NUM_INFLUENCES];
 uniform float noiseFactor;
 uniform float reliefFactor;
 uniform float borderFactor;
@@ -118,9 +118,9 @@ void main() {
 
     float heightmap = 0.0;
     for (int i = 0; i < NUM_INFLUENCES; i++) {
-        vec2 influencePos = vec2(influenceTransforms[i][2][0], influenceTransforms[i][2][1]);
-        float influenceScale = influenceTransforms[i][0][0];
-        float influenceFactor = influenceFactors[i][0];
+        vec2 influencePos = vec2(topoInfluenceTransforms[i][2][0], topoInfluenceTransforms[i][2][1]);
+        float influenceScale = topoInfluenceTransforms[i][0][0];
+        float influenceFactor = topoInfluenceFactors[i][0];
 
         vec2 offset_warped_uv = warped_uv - influencePos + vec2(0.5, 0.5);
         heightmap += shape_circle(offset_warped_uv, influenceScale, 1.0) * influenceFactor;

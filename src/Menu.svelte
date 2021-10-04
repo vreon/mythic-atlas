@@ -1,6 +1,6 @@
 <script>
   import { vec2, mat3 } from "gl-matrix";
-  
+
   import {
     mode,
     seed,
@@ -49,10 +49,10 @@
     return overlay;
   }
 
-  function addInfluence(factor, transform) {
+  function addTopoInfluence(factor, transform) {
     let overlay = {
-      type: "influence",
-      name: "influence" + $overlays.length,
+      type: "topoInfluence",
+      name: "topoInfluence" + $overlays.length,
       factor,
       transform,
       document: {
@@ -65,10 +65,10 @@
     return overlay;
   }
 
-  addInfluence(1.0, mat3.fromValues(0.6, 0, 0, 0, 0.6, 0, 0.4, 0.4, 0.6));
-  addInfluence(-1.0, mat3.fromValues(0.4, 0, 0, 0, 0.4, 0, 0.65, 0.65, 0.4));
+  addTopoInfluence(1.0, mat3.fromValues(0.6, 0, 0, 0, 0.6, 0, 0.4, 0.4, 0.6));
+  addTopoInfluence(-1.0, mat3.fromValues(0.4, 0, 0, 0, 0.4, 0, 0.65, 0.65, 0.4));
   for (let i = 0; i < 7; i++) {
-    addInfluence(0.0, mat3.fromValues(0.1, 0, 0, 0, 0.1, 0, -0.075, 0.05 + 0.125 * i, 0.1));
+    addTopoInfluence(0.0, mat3.fromValues(0.1, 0, 0, 0, 0.1, 0, -0.075, 0.05 + 0.125 * i, 0.1));
   }
 
   function randomize() {
@@ -174,7 +174,7 @@
           <option value="bottom">anchor bottom</option>
           <option value="bottom-right">anchor bottom right</option>
         </select>
-      {:else if $selectedOverlay.type === "influence"}
+      {:else}
         <div>(to do...)</div>
       {/if}
     </ControlPanel>

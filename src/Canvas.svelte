@@ -31,12 +31,14 @@
   let canvasDragging = false;
 
   $: paletteRGB = $palette.map(hexToVec3);
-  $: influenceTransforms = $overlays.filter((o) => o.type === "influence").map((o) => o.transform);
+  $: topoInfluenceTransforms = $overlays
+    .filter((o) => o.type === "topoInfluence")
+    .map((o) => o.transform);
 
   // BUG[uniform1fv]: this should be a float[] but regl chokes
   // See https://github.com/regl-project/regl/issues/611
-  $: influenceFactors = $overlays
-    .filter((o) => o.type === "influence")
+  $: topoInfluenceFactors = $overlays
+    .filter((o) => o.type === "topoInfluence")
     .map((o) => vec2.fromValues(o.factor, o.factor));
 
   onMount(() => {
@@ -133,9 +135,9 @@
         palettePeak: regl.prop("palettePeak"),
       };
 
-      for (let i = 0; i < influenceTransforms.length; i++) {
-        uniforms[`influenceTransforms[${i}]`] = regl.prop(`influenceTransforms[${i}]`);
-        uniforms[`influenceFactors[${i}]`] = regl.prop(`influenceFactors[${i}]`);
+      for (let i = 0; i < topoInfluenceTransforms.length; i++) {
+        uniforms[`topoInfluenceTransforms[${i}]`] = regl.prop(`topoInfluenceTransforms[${i}]`);
+        uniforms[`topoInfluenceFactors[${i}]`] = regl.prop(`topoInfluenceFactors[${i}]`);
       }
 
       const draw = regl({
@@ -161,8 +163,8 @@
           time,
           seed: $seed,
           canvasTransform: $view,
-          influenceTransforms,
-          influenceFactors,
+          topoInfluenceTransforms,
+          topoInfluenceFactors,
           noiseFactor: $noiseFactor,
           reliefFactor: $reliefFactor,
           borderFactor: $borderFactor,
