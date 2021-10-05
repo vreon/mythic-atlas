@@ -27,7 +27,7 @@ Wishlist:
     ☐ Shadows
     ☐ Delete
     ✔ Scale ratio (scale text/icon based on zoom) @done(21-10-04 23:10)
-    ☐ Rotation
+    ✔ Rotation @done(21-10-04 23:32)
   ☐ Regional colormaps
   ☐ Stickers (compass rose, ships, monsters, birds)
   ☐ Fonts (dynamic from Google Fonts, choose stylistic variants)
@@ -70,6 +70,8 @@ Bugs:
   ✔ Firefox: Mousewheel on canvas/influences has no effect @done(21-10-02 13:36)
   ✔ Firefox: Palette pseudo-elements need styling @done(21-10-02 01:47)
   ☐ Heightmaps > 1.0 look silly during fakeHeightFactor transitions
+  ☐ Label rotation doesn't update until canvas drag (reactivity problem?)
+  ☐ Label font size updates 1 frame after canvas zoom, looks jittery
 
 Cleanup:
   ✔ Refactor into components @done(21-10-03 22:41)

@@ -5,6 +5,7 @@
   export let text;
   export let fontSizeRem;
   export let letterSpacingRem;
+  export let rotationDeg;
   export let textAlign;
   export let anchor = "c";
 
@@ -47,7 +48,7 @@
     font-family: 'Alegreya', serif;
     font-weight: 800;
     font-style: italic;
-    transform: translate({x + offsetX}px, {y + offsetY}px);
+    transform: translate({x + offsetX}px, {y + offsetY}px) rotate({rotationDeg}deg);
   "
 >
   {text}

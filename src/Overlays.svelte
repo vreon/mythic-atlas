@@ -105,6 +105,7 @@
       y={o.document.position[1]}
       fontSizeRem={o.fontSizeRem * lerp(1.0, 1.0 / $view[0] * $canvasWidth / 1000, o.zooming)}
       letterSpacingRem={o.letterSpacingRem * lerp(1.0, 1.0 / $view[0] * $canvasWidth / 1000, o.zooming)}
+      rotationDeg={o.rotationDeg}
       textAlign={o.textAlign}
       text={o.text}
       anchor={o.anchor}

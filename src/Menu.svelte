@@ -38,6 +38,7 @@
       fontSizeRem: 2,
       letterSpacingRem: 0,
       zooming: 1.0,
+      rotationDeg: 0,
       textAlign: "left",
       transform: transform || mat3.fromValues(1, 0, 0, 0, 1, 0, 0.5, 0.5, 1),
       anchor: "c",
@@ -170,6 +171,27 @@
             on:input={() => overlays.set($overlays)}
             bind:value={$selectedOverlay.letterSpacingRem}
           />
+        </label>
+        <label class="range">
+          Rotation
+          <input
+            type="range"
+            min="-180"
+            max="180"
+            step="any"
+            on:input={() => overlays.set($overlays)}
+            bind:value={$selectedOverlay.rotationDeg}
+            list="rotations"
+          />
+          <datalist id="rotations">
+            <option value="-135" />
+            <option value="-90" />
+            <option value="-45" />
+            <option value="0" />
+            <option value="45" />
+            <option value="90" />
+            <option value="135" />
+          </datalist>
         </label>
         <select on:change={() => overlays.set($overlays)} bind:value={$selectedOverlay.textAlign}>
           <option value="left">text left</option>
