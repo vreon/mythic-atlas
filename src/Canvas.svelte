@@ -30,6 +30,8 @@
   let regl;
   let canvasDragging = false;
 
+  $: paused = $mode === "help";
+
   $: paletteRGB = $palette.map(hexToVec3);
   $: topoInfluenceTransforms = $overlays
     .filter((o) => o.type === "topoInfluence")
@@ -57,7 +59,7 @@
   }
 
   function canvasStartDrag(e) {
-    if (e.button !== 0) {
+    if (e.button !== 0 || paused) {
       return;
     }
     canvasDragging = true;
@@ -152,6 +154,9 @@
       });
 
       regl.frame(({ time }) => {
+        if (paused) {
+          return;
+        }
         // clear contents of the drawing buffer
         regl.clear({
           color: [0, 0, 0, 1.0],

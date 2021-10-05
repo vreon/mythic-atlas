@@ -188,11 +188,13 @@
     <MenuButton icon={Loader2Line} label="Effects" on:click={() => mode.set("effects")} />
   {/if}
 
-  {#if $mode !== null}
+  {#if $mode !== null && $mode !== "help"}
     <MenuButton icon={ArrowLeftLine} label="Back" on:click={resetMode} />
   {/if}
 
-  <MenuButton icon={QuestionLine} label="Help" />
+  {#if $mode !== "help"}
+    <MenuButton icon={QuestionLine} label="Help" on:click={() => mode.set("help")} />
+  {/if}
 </div>
 
 <style>
