@@ -103,6 +103,7 @@
       letterSpacingRem={o.letterSpacingRem}
       textAlign={o.textAlign}
       text={o.text}
+      anchor={o.anchor}
     />
   {:else if o.type === "topoInfluence" && $mode === "topography"}
     <Influence

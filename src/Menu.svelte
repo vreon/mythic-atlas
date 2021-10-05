@@ -39,6 +39,7 @@
       letterSpacingRem: 0,
       textAlign: "left",
       transform: transform || mat3.fromValues(1, 0, 0, 0, 1, 0, 0.5, 0.5, 1),
+      anchor: "c",
       document: {
         position: vec2.create(),
         extent: vec2.create(),
@@ -163,16 +164,16 @@
           <option value="center">text center</option>
           <option value="right">text right</option>
         </select>
-        <select on:change={() => overlays.set($overlays)}>
-          <option value="top-left">anchor top left</option>
-          <option value="top">anchor top</option>
-          <option value="top-right">anchor top right</option>
-          <option value="left">anchor left</option>
-          <option value="center">anchor center</option>
-          <option value="right">anchor right</option>
-          <option value="bottom-left">anchor bottom left</option>
-          <option value="bottom">anchor bottom</option>
-          <option value="bottom-right">anchor bottom right</option>
+        <select on:change={() => overlays.set($overlays)} bind:value={$selectedOverlay.anchor}>
+          <option value="nw">anchor top left</option>
+          <option value="n">anchor top</option>
+          <option value="ne">anchor top right</option>
+          <option value="w">anchor left</option>
+          <option value="c">anchor center</option>
+          <option value="e">anchor right</option>
+          <option value="sw">anchor bottom left</option>
+          <option value="s">anchor bottom</option>
+          <option value="se">anchor bottom right</option>
         </select>
       {:else}
         <div>(to do...)</div>

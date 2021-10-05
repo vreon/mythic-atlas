@@ -6,12 +6,37 @@
   export let fontSizeRem;
   export let letterSpacingRem;
   export let textAlign;
+  export let anchor = "c";
+
+  let offsetX;
+  let offsetY;
+
+  let w;
+  let h;
+
+  $: if (anchor === "nw" || anchor === "w" || anchor === "sw") {
+    offsetX = 0;
+  } else if (anchor === "n" || anchor === "c" || anchor === "s") {
+    offsetX = -w / 2;
+  } else if (anchor === "ne" || anchor === "e" || anchor === "se") {
+    offsetX = -w;
+  }
+
+  $: if (anchor === "nw" || anchor === "n" || anchor === "ne") {
+    offsetY = 0;
+  } else if (anchor === "w" || anchor === "c" || anchor === "e") {
+    offsetY = -h / 2;
+  } else if (anchor === "sw" || anchor === "s" || anchor === "se") {
+    offsetY = -h;
+  }
 </script>
 
 <div
   class:selected
   on:mousedown
   on:dblclick
+  bind:clientWidth={w}
+  bind:clientHeight={h}
   style="
     color: white;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 1.0);
@@ -22,7 +47,7 @@
     font-family: 'Alegreya', serif;
     font-weight: 800;
     font-style: italic;
-    transform: translate({x}px, {y}px);
+    transform: translate({x + offsetX}px, {y + offsetY}px);
   "
 >
   {text}
