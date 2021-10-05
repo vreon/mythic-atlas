@@ -14,10 +14,16 @@ Wishlist:
   ✔ Selected overlay controls @done(21-09-26 22:18)
   ☐ Labels / points of interest @started(21-09-26 22:18)
     ✔ Anchor position (corners, edges, center, icon) @started(21-09-26 22:33) @done(21-10-04 19:51) @lasted(1w21h18m3s)
-    ☐ Font name, size, styles, color, letter spacing @started(21-09-26 22:33)
-    ☐ Icon name, size, color
-      https://remixicon.com
+    ☐ Font name
+    ✔ Font size @done(21-10-04 23:11)
+    ☐ Font style
+    ☐ Font color
+    ✔ Letter spacing @done(21-10-04 23:11)
+    ☐ Icon name
+    ☐ Icon size
+    ☐ Icon color
     ☐ Icon position (corners, edges)
+      https://remixicon.com
     ☐ Shadows
     ☐ Delete
     ✔ Scale ratio (scale text/icon based on zoom) @done(21-10-04 23:10)
