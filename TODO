@@ -20,7 +20,7 @@ Wishlist:
     ☐ Icon position (corners, edges)
     ☐ Shadows
     ☐ Delete
-    ☐ Scale ratio (scale text/icon based on zoom)
+    ✔ Scale ratio (scale text/icon based on zoom) @done(21-10-04 23:10)
     ☐ Rotation
   ☐ Regional colormaps
   ☐ Stickers (compass rose, ships, monsters, birds)
