@@ -86,6 +86,10 @@
     }
     overlays.set($overlays);
   }
+
+  function lerp(v0, v1, t) {
+    return (1 - t) * v0 + t * v1;
+  }
 </script>
 
 {#each $overlays as o}
@@ -99,7 +103,7 @@
       }}
       x={o.document.position[0]}
       y={o.document.position[1]}
-      fontSizeRem={o.fontSizeRem}
+      fontSizeRem={o.fontSizeRem * lerp(1.0, 1.0 / $view[0] * $canvasWidth / 700, o.zooming)}
       letterSpacingRem={o.letterSpacingRem}
       textAlign={o.textAlign}
       text={o.text}

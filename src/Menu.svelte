@@ -37,6 +37,7 @@
       text,
       fontSizeRem: 2,
       letterSpacingRem: 0,
+      zooming: 1.0,
       textAlign: "left",
       transform: transform || mat3.fromValues(1, 0, 0, 0, 1, 0, 0.5, 0.5, 1),
       anchor: "c",
@@ -146,6 +147,17 @@
             step="any"
             on:input={() => overlays.set($overlays)}
             bind:value={$selectedOverlay.fontSizeRem}
+          />
+        </label>
+        <label class="range">
+          Zooming
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="any"
+            on:input={() => overlays.set($overlays)}
+            bind:value={$selectedOverlay.zooming}
           />
         </label>
         <label class="range">
