@@ -8,6 +8,7 @@
   export let rotationDeg;
   export let textAlign;
   export let anchor = "c";
+  export let scale = 1.0;
 
   let offsetX;
   let offsetY;
@@ -48,7 +49,7 @@
     font-family: 'Alegreya', serif;
     font-weight: 800;
     font-style: italic;
-    transform: translate({x + offsetX}px, {y + offsetY}px) rotate({rotationDeg}deg);
+    transform: translate({x + offsetX}px, {y + offsetY}px) rotate({rotationDeg}deg) scale({scale});
   "
 >
   {text}

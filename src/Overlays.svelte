@@ -103,8 +103,9 @@
       }}
       x={o.document.position[0]}
       y={o.document.position[1]}
-      fontSizeRem={o.fontSizeRem * lerp(1.0, 1.0 / $view[0] * $canvasWidth / 1000, o.zooming)}
-      letterSpacingRem={o.letterSpacingRem * lerp(1.0, 1.0 / $view[0] * $canvasWidth / 1000, o.zooming)}
+      scale={lerp(1.0, 1.0 / $view[0] * $canvasWidth / 1000, o.zooming)}
+      fontSizeRem={o.fontSizeRem}
+      letterSpacingRem={o.letterSpacingRem}
       rotationDeg={o.rotationDeg}
       textAlign={o.textAlign}
       text={o.text}
