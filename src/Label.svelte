@@ -1,5 +1,6 @@
 <script>
   export let selected = false;
+  export let interactable = true;
   export let x;
   export let y;
   export let text;
@@ -35,8 +36,8 @@
 
 <div
   class:selected
+  class:interactable
   on:mousedown
-  on:dblclick
   bind:clientWidth={w}
   bind:clientHeight={h}
   style="
@@ -64,7 +65,13 @@
     border: 2px solid transparent;
     padding: 5px;
     white-space: pre;
+    pointer-events: none;
   }
+  div.interactable {
+    pointer-events: auto;
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  }  
   div:hover {
     border-color: rgba(0, 0, 0, 0.5);
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);

@@ -96,11 +96,8 @@
   {#if o.type === "label"}
     <Label
       selected={$selectedOverlay === o}
+      interactable={$mode === "labels"}
       on:mousedown={(e) => $mode === "labels" && startDrag(o, e)}
-      on:dblclick={(e) => {
-        mode.set("labels");
-        selectedOverlay.set(o);
-      }}
       x={o.document.position[0]}
       y={o.document.position[1]}
       scale={lerp(1.0, 1.0 / $view[0] * $canvasWidth / 1000, o.zooming)}
