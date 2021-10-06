@@ -5,7 +5,7 @@ import { quadOut } from "svelte/easing";
 export const mode = writable(null);
 export const seed = writable(Math.random());
 export const noiseFactor = writable(0.5);
-export const reliefFactor = writable(0.5);
+export const reliefFactor = writable(0.65);
 export const borderFactor = writable(0.05);
 export const fakeHeightFactor = tweened(1.0, {
   duration: 0,
