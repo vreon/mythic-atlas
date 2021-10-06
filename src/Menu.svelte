@@ -22,10 +22,11 @@
   import ShuffleLine from "svelte-remixicon/lib/icons/ShuffleLine.svelte";
   import EarthLine from "svelte-remixicon/lib/icons/EarthLine.svelte";
   import BrushLine from "svelte-remixicon/lib/icons/BrushLine.svelte";
-  import PriceTag3Line from "svelte-remixicon/lib/icons/PriceTag3Line.svelte";
+  import MapPin2Line from "svelte-remixicon/lib/icons/MapPin2Line.svelte";
   import QuestionLine from "svelte-remixicon/lib/icons/QuestionLine.svelte";
   import ArrowLeftLine from "svelte-remixicon/lib/icons/ArrowLeftLine.svelte";
   import Loader2Line from "svelte-remixicon/lib/icons/Loader2Line.svelte";
+  import Compass3Line from "svelte-remixicon/lib/icons/Compass3Line.svelte";
 
   let paletteName = "verdant";
   $: paletteName !== "custom" && palette.set([...palettes[paletteName]]);
@@ -122,7 +123,7 @@
       </label>
     </ControlPanel>
   {:else if $mode === "labels"}
-    <ControlPanel title="Labels" icon={PriceTag3Line}>
+    <ControlPanel title="Labels" icon={MapPin2Line}>
       <button
         on:click|preventDefault={() => {
           selectedOverlay.set(addLabel("New label"));
@@ -131,6 +132,10 @@
         + Add label
       </button>
     </ControlPanel>
+  {:else if $mode === "stickers"}
+    <ControlPanel title="Stickers" icon={Compass3Line}>
+      (coming soon!)
+    </ControlPanel>    
   {/if}
 
   {#if $selectedOverlay !== null}
@@ -218,7 +223,8 @@
     <MenuButton icon={ShuffleLine} label="Random" on:click={randomize} />
     <MenuButton icon={EarthLine} label="Topography" on:click={() => mode.set("topography")} />
     <MenuButton icon={BrushLine} label="Colors" on:click={() => mode.set("colors")} />
-    <MenuButton icon={PriceTag3Line} label="Labels" on:click={() => mode.set("labels")} />
+    <MenuButton icon={MapPin2Line} label="Labels" on:click={() => mode.set("labels")} />
+    <MenuButton icon={Compass3Line} label="Stickers" on:click={() => mode.set("stickers")} />
     <MenuButton icon={Loader2Line} label="Effects" on:click={() => mode.set("effects")} />
   {/if}
 
