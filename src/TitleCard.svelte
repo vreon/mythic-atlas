@@ -24,7 +24,7 @@
     />
   </svg>  
   <p class="title">Mythic Atlas</p>
-  <p class="subtitle">&mdash; Fantasy Cartography App &mdash;</p>
+  <p class="subtitle">&mdash; Fantasy Cartography Tool &mdash;</p>
 </div>
 
 <style>
