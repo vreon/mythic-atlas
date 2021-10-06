@@ -69,7 +69,7 @@ Bugs:
   ✔ Firefox: Range inputs exceed container @done(21-10-02 01:47)
   ✔ Firefox: Mousewheel on canvas/influences has no effect @done(21-10-02 13:36)
   ✔ Firefox: Palette pseudo-elements need styling @done(21-10-02 01:47)
-  ☐ Heightmaps > 1.0 look silly during fakeHeightFactor transitions
+  ✔ Heightmaps > 1.0 look silly during fakeHeightFactor transitions (wontfix lol) @done(21-10-06 00:47)
   ☐ Label rotation doesn't update until canvas drag (reactivity problem?)
   ☐ Label font size updates 1 frame after canvas zoom, looks jittery
 
