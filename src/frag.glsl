@@ -2,7 +2,7 @@
 
 #define NUM_INFLUENCES 10
 
-precision mediump float;
+precision highp float;
 varying vec2 vUv;
 uniform float time;
 uniform float seed;
