@@ -74,13 +74,16 @@
     addTopoInfluence(0.0, mat3.fromValues(0.1, 0, 0, 0, 0.1, 0, -0.075, 0.05 + 0.125 * i, 0.1));
   }
 
-  function randomize() {
-    fakeHeightFactor.set(0.0, { duration: 400 });
-    setTimeout(() => {
+  function randomize(e) {
+    if (e.shiftKey) {
+      fakeHeightFactor.set(0.0, { duration: 400 });
+      setTimeout(() => {
+        seed.set(Math.random());
+        fakeHeightFactor.set(1.0, { duration: 1000 });
+      }, 500);
+    } else {
       seed.set(Math.random());
-      fakeHeightFactor.set(1.0, { duration: 1000 });
-    }, 500);
-    console.log($palette);
+    }
   }
 
   function resetMode() {
@@ -100,10 +103,6 @@
         Relief
         <input type="range" min="0" max="1" step="any" bind:value={$reliefFactor} />
       </label>
-      <button on:click|preventDefault={() => seed.set(Math.random())}>
-        <ShuffleLine />
-        Random
-      </button>
     </ControlPanel>
   {:else if $mode === "colors"}
     <ControlPanel title="Colors" icon={BrushLine}>
