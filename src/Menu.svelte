@@ -39,7 +39,7 @@
       letterSpacingRem: 0,
       zooming: 1.0,
       rotationDeg: 0,
-      textAlign: "left",
+      textAlign: "center",
       transform: transform || mat3.fromValues(1, 0, 0, 0, 1, 0, 0.5, 0.5, 1),
       anchor: "c",
       document: {
