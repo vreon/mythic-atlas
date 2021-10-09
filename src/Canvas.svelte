@@ -58,33 +58,42 @@
     selectedOverlay.set(null);
   }
 
+  let previousPointerMoveEvent;
+
   function canvasStartDrag(e) {
-    if (e.button !== 0 || paused) {
+    if (!e.isPrimary || paused) {
       return;
     }
     canvasDragging = true;
     selectedOverlay.set(null);
-    addEventListener("mouseup", canvasStopDrag);
-    addEventListener("mousemove", canvasDrag);
+    addEventListener("pointermove", canvasDrag);
+    addEventListener("pointerup", canvasStopDrag);
+    addEventListener("pointercancel", canvasStopDrag);
   }
 
   function canvasDrag(e) {
-    // TODO: devicePixelRatio here might be a browser compat issue
-    // https://crbug.com/1092358
-    let delta = vec2.fromValues(
-      e.movementX / window.devicePixelRatio / $canvasWidth,
-      e.movementY / window.devicePixelRatio / $canvasHeight
-    );
-    view.translate(vec2.negate(vec2.create(), delta));
+    if (!e.isPrimary) {
+        return;
+    }
+    if (previousPointerMoveEvent) {
+        let delta = vec2.fromValues(
+          (e.clientX - previousPointerMoveEvent.clientX) / $canvasWidth,
+          (e.clientY - previousPointerMoveEvent.clientY) / $canvasHeight
+        );
+        view.translate(vec2.negate(vec2.create(), delta));
+    }
+    previousPointerMoveEvent = e;
   }
 
   function canvasStopDrag(e) {
-    if (e.button !== 0) {
+    if (!e.isPrimary) {
       return;
     }
     canvasDragging = false;
-    removeEventListener("mouseup", canvasStopDrag);
-    removeEventListener("mousemove", canvasDrag);
+    previousPointerMoveEvent = null;
+    removeEventListener("pointermove", canvasDrag);
+    removeEventListener("pointerup", canvasStopDrag);
+    removeEventListener("pointercancel", canvasStopDrag);
   }
 
   function canvasZoom(e) {
@@ -192,7 +201,7 @@
 
 <canvas
   bind:this={element}
-  on:mousedown={canvasStartDrag}
+  on:pointerdown={canvasStartDrag}
   on:wheel={canvasZoom}
   on:dblclick={resetMode}
   class:dragging={canvasDragging}
