@@ -45,7 +45,7 @@ Wishlist:
     Save/load from clipboard
   ✔ Better UI: Single column of chunky buttons @done(21-10-02 01:17)
   ☐ Show available hotkeys when hovering over stuff
-  ☐ Touch controls
+  ☐ Touch controls @started(21-10-11 20:19)
   ☐ Heightmap tonality
   ☐ Regional heightmap tonality
   ☐ HQ normal map
@@ -95,5 +95,5 @@ Way later:
   ☐ Discord / Twitter bot to generate random maps w/links
   ☐ Export heightmap / other maps
   ☐ Colormap gradient position editor
-  ☐ Noise buffer
+  ☐ On edit topo, render heightmap to a texture
   ☐ Curved text
