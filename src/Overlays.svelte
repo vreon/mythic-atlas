@@ -46,8 +46,9 @@
     selectedOverlay.set(overlay);
     overlay.document.listeners.stopDrag = () => stopDrag(overlay, e);
     overlay.document.listeners.drag = (e) => drag(overlay, e);
-    addEventListener("pointerup", overlay.document.listeners.stopDrag);
     addEventListener("pointermove", overlay.document.listeners.drag);
+    addEventListener("pointerup", overlay.document.listeners.stopDrag);
+    addEventListener("pointercancel", overlay.document.listeners.stopDrag);
   }
 
   function drag(overlay, e) {
@@ -76,8 +77,9 @@
       return;
     }
     previousPointerMoveEvent = null;
-    removeEventListener("pointerup", overlay.document.listeners.stopDrag);
     removeEventListener("pointermove", overlay.document.listeners.drag);
+    removeEventListener("pointerup", overlay.document.listeners.stopDrag);
+    removeEventListener("pointercancel", overlay.document.listeners.stopDrag);
   }
 
   function scale(overlay, e) {
