@@ -67,19 +67,20 @@
 
   .title {
     text-align: center;
-    font-size: 12vw;
+    font-size: min(6rem, 12vw);
   }
 
   .subtitle {
     text-align: center;
-    font-size: 4vw;
+    font-size: min(2rem, 4vw);
     font-variant: small-caps;
-    letter-spacing: 0.65vw;
+    letter-spacing: min(0.35rem, 0.65vw);
   }
 
   svg {
     position: absolute;
     transform: scale(0.5);
+    max-width: 1000px;
     color: rgba(255, 255, 255, 0.2);
   }
 </style>
