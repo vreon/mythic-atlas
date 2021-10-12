@@ -9,7 +9,7 @@
 
 <div
   class:selected
-  on:mousedown
+  on:pointerdown
   on:wheel
   style="
     transform: translate({x - width / 2}px, {y - height / 2}px);

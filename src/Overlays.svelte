@@ -12,6 +12,8 @@
   import Influence from "./Influence.svelte";
   import Label from "./Label.svelte";
 
+  let previousPointerMoveEvent;
+
   $: overlays.set(
     $overlays.map((o) => {
       // TODO: I think multiplies here could be another transform
@@ -38,39 +40,44 @@
   );
 
   function startDrag(overlay, e) {
-    if (e.button !== 0) {
+    if (!e.isPrimary) {
       return;
     }
     selectedOverlay.set(overlay);
     overlay.document.listeners.stopDrag = () => stopDrag(overlay, e);
     overlay.document.listeners.drag = (e) => drag(overlay, e);
-    addEventListener("mouseup", overlay.document.listeners.stopDrag);
-    addEventListener("mousemove", overlay.document.listeners.drag);
+    addEventListener("pointerup", overlay.document.listeners.stopDrag);
+    addEventListener("pointermove", overlay.document.listeners.drag);
   }
 
   function drag(overlay, e) {
-    // TODO: devicePixelRatio here might be a browser compat issue
-    // https://crbug.com/1092358
-    let delta = vec2.fromValues(
-      e.movementX / window.devicePixelRatio / $canvasWidth,
-      e.movementY / window.devicePixelRatio / $canvasHeight
-    );
-    vec2.multiply(delta, delta, vec2.fromValues($view[0], $view[4]));
-    vec2.multiply(
-      delta,
-      delta,
-      vec2.fromValues(1.0 / overlay.transform[0], 1.0 / overlay.transform[4])
-    );
-    mat3.translate(overlay.transform, overlay.transform, delta);
-    overlays.set($overlays);
+    if (!e.isPrimary) {
+      return;
+    }
+    if (previousPointerMoveEvent) {
+        let delta = vec2.fromValues(
+          (e.clientX - previousPointerMoveEvent.clientX) / $canvasWidth,
+          (e.clientY - previousPointerMoveEvent.clientY) / $canvasHeight
+        );
+      vec2.multiply(delta, delta, vec2.fromValues($view[0], $view[4]));
+      vec2.multiply(
+        delta,
+        delta,
+        vec2.fromValues(1.0 / overlay.transform[0], 1.0 / overlay.transform[4])
+      );
+      mat3.translate(overlay.transform, overlay.transform, delta);
+      overlays.set($overlays);
+    }
+    previousPointerMoveEvent = e;
   }
 
   function stopDrag(overlay, e) {
-    if (e.button !== 0) {
+    if (!e.isPrimary) {
       return;
     }
-    removeEventListener("mouseup", overlay.document.listeners.stopDrag);
-    removeEventListener("mousemove", overlay.document.listeners.drag);
+    previousPointerMoveEvent = null;
+    removeEventListener("pointerup", overlay.document.listeners.stopDrag);
+    removeEventListener("pointermove", overlay.document.listeners.drag);
   }
 
   function scale(overlay, e) {
@@ -97,7 +104,7 @@
     <Label
       selected={$selectedOverlay === o}
       interactable={$mode === "labels"}
-      on:mousedown={(e) => $mode === "labels" && startDrag(o, e)}
+      on:pointerdown={(e) => $mode === "labels" && startDrag(o, e)}
       x={o.document.position[0]}
       y={o.document.position[1]}
       scale={lerp(1.0, 1.0 / $view[0] * $canvasWidth / 1000, o.zooming)}
@@ -111,7 +118,7 @@
   {:else if o.type === "topoInfluence" && $mode === "topography"}
     <Influence
       selected={$selectedOverlay === o}
-      on:mousedown={(e) => startDrag(o, e)}
+      on:pointerdown={(e) => startDrag(o, e)}
       on:wheel={(e) => scale(o, e)}
       x={o.document.position[0]}
       y={o.document.position[1]}

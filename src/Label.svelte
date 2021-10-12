@@ -37,7 +37,7 @@
 <div
   class:selected
   class:interactable
-  on:mousedown
+  on:pointerdown
   bind:clientWidth={w}
   bind:clientHeight={h}
   style="
