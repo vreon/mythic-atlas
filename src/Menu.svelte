@@ -138,7 +138,7 @@
     </ControlPanel>    
   {/if}
 
-  {#if $selectedOverlay !== null}
+  {#if $selectedOverlay}
     <ControlPanel>
       <div><code>{$selectedOverlay.name}</code></div>
       {#if $selectedOverlay.type === "label"}
@@ -219,7 +219,7 @@
     </ControlPanel>
   {/if}
 
-  {#if $mode === null}
+  {#if !$mode}
     <MenuButton icon={ShuffleLine} label="Random" on:click={randomize} />
     <MenuButton icon={EarthLine} label="Topography" on:click={() => mode.set("topography")} />
     <MenuButton icon={BrushLine} label="Colors" on:click={() => mode.set("colors")} />
@@ -228,7 +228,7 @@
     <MenuButton icon={Loader2Line} label="Effects" on:click={() => mode.set("effects")} />
   {/if}
 
-  {#if $mode !== null && $mode !== "help"}
+  {#if $mode && $mode !== "help"}
     <MenuButton icon={ArrowLeftLine} label="Back" on:click={resetMode} />
   {/if}
 
