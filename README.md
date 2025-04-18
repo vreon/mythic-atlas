@@ -2,7 +2,7 @@
 
 A real-time, non-destructive, web-based fantasy map editor.
 
-:arrow_right: **[Try it in your browser!](https://www.mythicatlas.com)**
+:arrow_right: **[Try it in your browser!](https://mythic-atlas-16e4e7.netlify.app/)**
 
 With **Mythic Atlas**, you can place markers to indicate where you want land
 and sea, and **move them in real-time** without waiting around for the map to
